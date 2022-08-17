@@ -1,5 +1,5 @@
 import random
-from lambdaTest import outter
+from test_lambda import outter
 
 
 def hanoi(n, a, b, c):
