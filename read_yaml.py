@@ -4,7 +4,7 @@
 import yaml
 import pymysql
 
-with open('./data_file/config.yaml','r') as f:
+with open('Config/config.yaml', 'r') as f:
     cfg = yaml.load(f)
 data = cfg['mysql']['config']
 print(data)

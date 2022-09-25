@@ -8,7 +8,7 @@ import os
 
 def logger(name=__name__):
     # 1- 日志的名称：  路径+名字(进程/日期)+后缀名
-    dir = './logs/'
+    dir = '../logs/'
     if not os.path.exists(dir):
         os.mkdir(dir)
     # 1- 日志的名称：  路径+名字(进程/日期)+后缀名

@@ -3,7 +3,7 @@
 # @Author  : hejinhu
 from configparser import ConfigParser
 
-file_path = './data_file/config.ini'
+file_path = 'Config/config.ini'
 cfg = ConfigParser()
 cfg.read(file_path)
 list = cfg.items('mysql')

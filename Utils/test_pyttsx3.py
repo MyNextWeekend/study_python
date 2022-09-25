@@ -28,5 +28,5 @@ for i in text.split('\n'):
         print(i)
         time.sleep(1)
         engine.runAndWait()
-engine.save_to_file(text2, './file/abc2.mp3')
+engine.save_to_file(text2, './common/abc2.mp3')
 engine.runAndWait()

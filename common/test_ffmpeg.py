@@ -1,7 +1,7 @@
 import subprocess
 
-audio1 = './file/abc.mp3'
-audio2 = './file/abc2.mp3'
+audio1 = './common/abc.mp3'
+audio2 = './common/abc2.mp3'
 
 
 def action_ffmpeg(cmd):
