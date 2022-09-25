@@ -7,12 +7,16 @@ class ORM:
         print(name)
         dic = self.__dict__
         print(dic)
+
+
 class User(ORM):
     height = 77
-    def __init__(self,age):
+
+    def __init__(self, age):
         self.name = 'zhangsan'
         self.age = age
-        print(self.__dict__)
+        print(f'__init__:{self.__dict__}')
+
 
 if __name__ == '__main__':
     u = User(99)
