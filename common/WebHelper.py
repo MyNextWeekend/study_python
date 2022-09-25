@@ -50,7 +50,7 @@ class WebHelper(object):
                 eReturn.append(ele)
         return eReturn
 
-    def __init__(self, driver='', browserType='SF', url=''):
+    def __init__(self, driver: webdriver, browserType='SF', url=''):
         """初始化操作"""
         self.url = url
         self.browserType = browserType
