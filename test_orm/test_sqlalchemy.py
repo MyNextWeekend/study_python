@@ -15,6 +15,13 @@ from sqlalchemy import *
 
 Base = declarative_base()
 
+from sqlalchemy.orm import sessionmaker, scoped_session
+
+# 创建session
+session_factory = sessionmaker(bind=engine)
+# session = scoped_session(session_factory=session_factory)
+session = session_factory()
+
 
 class People(Base):
     __tablename__ = "people"
@@ -26,28 +33,11 @@ class People(Base):
     birthday = Column(Date)
     six = Column(String(64))
 
-    # def __init__(self, name, email):
-    #     self.name = name
-    #     self.email = email
-    def __repr__(self):
-        return f'id:{self.id},name:{self.name},password:{self.password},'
-
-    def to_dic(self):
-        return {
-            "name": self.name,
-            "password": self.password,
-            "address": self.address,
-            "age": self.age,
-            "birthday": self.birthday,
-            "six": self.six
-        }
+    def insert(self):
+        session.add(self)
+        session.commit()
 
 
-from sqlalchemy.orm import sessionmaker
-
-# 创建session
-DbSession = sessionmaker(bind=engine)
-session = DbSession()
 """
 批量插入共有以下几种方法，对它们的批量做了比较，分别是：
 session.add_all() < bulk_save_object() < bulk_insert_mappings() < SQLAlchemy_core()
@@ -60,44 +50,11 @@ session.add_all() < bulk_save_object() < bulk_insert_mappings() < SQLAlchemy_cor
 # p.age = 18
 # p.address = '湖北随州'
 # p.birthday = '1998-05-20'
-# session.add(p)
-# session.commit()
+# p.insert()
 from faker import Faker
 
 f = Faker(locale='zh-CN')
 # 批量增加-->bulk_save_object()
-# objs = []
-# for i in range(10000):
-#     p = People()
-#     p.name = f.name()
-#     p.six = f.name()
-#     p.age = f.pyint(min_value=0, max_value=9999, step=1)
-#     p.address = f.address()
-#     p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-#     objs.append(p)
-# start = time.time()
-# session.bulk_save_objects(objs)
-# session.commit()
-# print(time.time() - start)  # 30s
-
-# 批量增加-->bulk_insert_mappings()
-objs = []
-for i in range(100000):
-    p = People()
-    p.name = f.name()
-    p.six = f.name()
-    p.age = f.pyint(min_value=0, max_value=9999, step=1)
-    p.address = f.address()
-    p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-    a = vars(p)
-    a.pop('_sa_instance_state', None)
-    objs.append(a)
-start = time.time()
-session.bulk_insert_mappings(People, objs)
-session.commit()
-print(time.time() - start)  # 30s
-
-# 批量增加-->
 objs = []
 for i in range(10000):
     p = People()
@@ -106,16 +63,48 @@ for i in range(10000):
     p.age = f.pyint(min_value=0, max_value=9999, step=1)
     p.address = f.address()
     p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-    a = vars(p)
-    a.pop('_sa_instance_state', None)
-    objs.append(a)
+    objs.append(p)
 start = time.time()
-session.execute(
-    # People.__table__.insert().values(objs)  # 3.101
-    People.__table__.insert(), objs  # 2.766
-)
+session.bulk_save_objects(objs)
 session.commit()
-print(time.time() - start)
+print(time.time() - start)  # 30s
+
+# 批量增加-->bulk_insert_mappings()
+# objs = []
+# for i in range(100000):
+#     p = People()
+#     p.name = f.name()
+#     p.six = f.name()
+#     p.age = f.pyint(min_value=0, max_value=9999, step=1)
+#     p.address = f.address()
+#     p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
+#     a = vars(p)
+#     a.pop('_sa_instance_state', None)
+#     objs.append(a)
+# start = time.time()
+# session.bulk_insert_mappings(People, objs)
+# session.commit()
+# print(time.time() - start)  # 30s
+
+# 批量增加-->
+# objs = []
+# for i in range(10000):
+#     p = People()
+#     p.name = f.name()
+#     p.six = f.name()
+#     p.age = f.pyint(min_value=0, max_value=9999, step=1)
+#     p.address = f.address()
+#     p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
+#     a = vars(p)
+#     a.pop('_sa_instance_state', None)
+#     objs.append(a)
+# start = time.time()
+# session.execute(
+#     # People.__table__.insert().values(objs)  # 3.101
+#     People.__table__.insert(), objs  # 2.766
+# )
+# session.commit()
+# print(time.time() - start)
 
 # 查询
 # a = session.query(People).filter(People.name == '谢海珊').all()
