@@ -1,20 +1,27 @@
-import os
-from atexit import register
+class abc:
+    age = ''
+
+    def __init__(self):
+        self.name = ''
+
+    def set_name(self, name):
+        if len(name) > 3 or len(name) < 2:
+            print('输入的名字不合法')
+        else:
+            self.name = name
+
+    @classmethod
+    def get_age(cls):
+        return cls.age
 
 
-def main():
-    print('main')
-
-
-def goodbye(name, adjective):
-    print('Goodbye, %s, it was %s to meet you.' % (name, adjective))
-
-
-# register(goodbye, 'Donny', 'nice')
-# or:
-# register(goodbye, adjective='nice', name='Donny')
 if __name__ == '__main__':
-    register(goodbye, adjective='nice', name='Donny')
-    main()
-    exit(1)  # 程序退出了
-    print("chegn xu")
+    abc.age = 99  # 类属性赋值
+    obj = abc()  # 实例对象
+    print(abc.get_age())  # 99
+    print(obj.get_age())  # 99
+    print('-------')
+    # obj.age = 1999
+    print(abc.get_age())  # 99
+    print(obj.get_age())  # 99
+    print(obj.age)  # 1999
