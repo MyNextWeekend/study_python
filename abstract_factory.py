@@ -124,7 +124,7 @@ class FruitFactory:
         print("需要支付的金额共计为：%.2f元" % money)
 
     def show_info(self):
-        # 展示最终的购买信息
+        # 展示最终购买的信息
         self.name_object.print_name()
         self.weight_object.print_weight()
         self.price_object.print_price()
@@ -158,4 +158,3 @@ if __name__ == '__main__':
     buy_res = FruitFactory(int(buy_info[0]), int(buy_info[1]), int(buy_info[2]), int(buy_info[3]))
     # 购买信息的展示
     buy_res.show_info()
-
