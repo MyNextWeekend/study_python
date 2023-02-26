@@ -13,6 +13,6 @@ pyautogui.onScreen(100, 100)
 pyautogui.moveTo(300, 300, 1)
 # 鼠标在时间内移动到当前坐标的相对坐标
 pyautogui.moveRel(300, 300, 1)
-# 在制定位置点击右键
+# 在指定位置点击右键
 pyautogui.click(200, 400, button='right')
 # print(a)
