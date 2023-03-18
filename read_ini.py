@@ -3,6 +3,8 @@
 # @Author  : hejinhu
 import configparser
 
+from Utils.path import get_path
+
 
 def get_args(file):
     cfg = configparser.RawConfigParser()
@@ -11,7 +13,8 @@ def get_args(file):
 
 
 if __name__ == '__main__':
-    file_path = 'Config/config.ini'
+    file_path = get_path('Config/config.ini')
     f = get_args(file_path)
     # 如果key不存在就返回fallback
     user = f.get('mysql', 'user', fallback='')
+    print(user)
