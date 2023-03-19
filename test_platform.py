@@ -4,3 +4,4 @@
 import platform
 
 print(platform.platform().split('-', 1))
+print(platform.system())
