@@ -29,7 +29,7 @@ class MyWifi:
             # print(data.ssid)  # 输出wifi名称
             yield data.ssid
 
-    def conne_wifi(self, wifi_name, password):
+    def conn_wifi(self, wifi_name, password):
         self.ifaces.disconnect()  # 断开网卡连接
         time.sleep(3)  # 缓冲3秒
 
@@ -54,7 +54,7 @@ class MyWifi:
 if __name__ == '__main__':
     m = MyWifi()
     for i in m.get_wifi_name():
-        m.conne_wifi(i, '12345678')
+        m.conn_wifi(i, '12345678')
 
     # MyWifi().get_wifi_name()
     # MyWifi().conne_wifi("wifi007", '1234567899')
