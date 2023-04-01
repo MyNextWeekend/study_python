@@ -3,7 +3,6 @@
 # @Author  : hejinhu
 import numpy as np
 import pandas as pd
-import tqdm
 
 data = pd.read_csv(r'a.csv', header=0)
 # 显示前N行记录。默认的值为5
@@ -26,26 +25,20 @@ data['aa'].value_counts()
 
 
 class KMeans:
-    '''Kmeans聚类算法实现'''
+    """Kmeans聚类算法实现"""
 
     def __init__(self, k, times):
-        '''初始化
-
-        Parameters
-        -----
+        """初始化
         k: int 聚成几个类
         times: int 迭代次数
-        '''
+        """
         self.k = k
         self.times = times
 
     def fit(self, X):
-        '''根据所给数据训练
-
-        Pararmeters
-        ------
+        """根据所给数据训练
         X: 类数组类型，形如：[样本数量，特征数量]
-        '''
+        """
         X = np.asarray(X)
         # 设置随机数种子，以便于可以相同的随机系列，以便随机结果重现
         np.random.seed(0)
@@ -54,29 +47,23 @@ class KMeans:
         # 用于存放数据所属标签
         self.labels_ = np.zeros(len(X))
         # 开始迭代
-        for t in tqdm(range(self.times)):
+        for t in range(self.times):
             # 循环遍历样本计算每个样本与聚类中心的距离
             for index, x in enumerate(X):
                 # 计算每个样本与每个聚类中心的欧式距离
                 dis = np.sqrt(np.sum((x - self.cluster_centers_) ** 2, axis=1))
                 # 将最小距离的索引赋值给标签数组，索引的值就是当前所属的簇。范围威威（0，K-1）
                 self.labels_[index] = dis.argmin()
-            # 循环便利每一个数更新聚类中心
+            # 循环遍历每一个数更新聚类中心
             for i in range(self.k):
                 # 计算每个簇内所有点的均值，用来更新聚类中心
                 self.cluster_centers_[i] = np.mean(X[self.labels_ == i], axis=0)
 
     def predict(self, X):
-        '''预测样本属于哪个簇
-
-        Parameters
-        -----
+        """预测样本属于哪个簇
         x: 类数组类型。形如[样本数量。特征数量]
-
-        Reeturn
-        -----
         result: 类数组，每一个x所属的簇
-        '''
+        """
         X = np.asarray(X)
         result = np.zeros(len(X))
         for index, x in enumerate(X):
