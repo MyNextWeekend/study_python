@@ -7,7 +7,7 @@ import execjs
 # }
 # """
 
-with open('./test.js', 'r') as fin:
+with open('../执行js/test.js', 'r') as fin:
     js_text = fin.read()
 
 ctx = execjs.compile(js_text)

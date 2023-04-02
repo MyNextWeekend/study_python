@@ -4,7 +4,7 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from Utils.path import get_path
+from utils.path_utils import get_path
 
 
 class SingletonLog:

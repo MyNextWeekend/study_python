@@ -4,7 +4,7 @@
 import pywifi
 from pywifi import const  # 获取连接状态的常量库
 import time
-from Utils.log_utils import SingletonLog
+from utils.log_utils import SingletonLog
 
 logger = SingletonLog().get_logger()
 
