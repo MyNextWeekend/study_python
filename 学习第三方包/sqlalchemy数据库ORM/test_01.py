@@ -3,8 +3,8 @@
 # @Author  : hejinhu
 import time
 
-from 学习第三方包.sqlalchemy数据库关系映射.dao import People
-from 学习第三方包.sqlalchemy数据库关系映射.properties import session_factory
+from 学习第三方包.sqlalchemy数据库ORM.dao import People
+from 学习第三方包.sqlalchemy数据库ORM.properties import session_factory
 
 
 def add():
