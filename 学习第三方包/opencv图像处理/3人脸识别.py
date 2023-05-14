@@ -42,6 +42,8 @@ while cap.isOpened():
     if not flag:
         break  # 取不到图像的时候就退出
     face_detect(frame)
-
+    key = cv2.waitKey(1)  # 图像展示时间延时1ms，这个中间也在等待键盘输入
+    if key == 27:  # esc键对应的ASCII码是27
+        break
 cap.release()  # 释放摄像头
 cv2.destroyAllWindows()  # 销毁所有窗口
