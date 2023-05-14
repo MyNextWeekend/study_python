@@ -7,8 +7,8 @@ import os
 # 生成LBPH识别器实例模型
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 # 使用之前训练好的模型
-recognizer.read('trainner/trainner.yml')
-names = []
+recognizer.read('trainer/trainer.yml')
+names = ["张三", "222", "王五"]
 
 
 def face_detect(img):
@@ -17,15 +17,16 @@ def face_detect(img):
     face_detector = cv2.CascadeClassifier("./haarcascade_frontalface_alt.xml")
     faces = face_detector.detectMultiScale(img_gray, 1.1, 5, cv2.CASCADE_SCALE_IMAGE, (100, 100), (300, 300))
     for x, y, w, h in faces:
-        cv2.rectangle(img, (x, y), (x + w, y + h), color=(0, 0, 255), thickness=2)
-        cv2.circle(img, center=(x + w // 2, y + h // 2), radius=w // 2, color=(0, 0, 255), thickness=1)
+        cv2.rectangle(img, (x, y), (x + w, y + h), color=(0, 0, 255), thickness=2)  # 红色方框
+        cv2.circle(img, center=(x + w // 2, y + h // 2), radius=w // 2, color=(0, 0, 255), thickness=1)  # 红色圆形
         # 与库中数据匹配分数
         ids, confidence = recognizer.predict(img_gray[y:y + h, x:x + w])
         if confidence > 80:
-            cv2.putText(img, "未知", (x + 10, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color=(0, 255, 0), thickness=1)
+            text = "unknow"
+            cv2.putText(img, text, (x + 10, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color=(0, 255, 0), thickness=1)
         else:
-            cv2.putText(img, f"{names[ids - 1]}", (x + 10, y - 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.75, color=(0, 255, 0), thickness=1)
+            text = f"{names[ids - 1]}"
+            cv2.putText(img, text, (x + 10, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color=(0, 255, 0), thickness=1)
     cv2.imshow("result", img)
     cv2.waitKey(1)
 

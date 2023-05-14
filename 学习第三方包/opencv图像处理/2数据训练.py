@@ -22,16 +22,18 @@ def get_image_and_labels(path):
         # 打开图片，灰度化   PIL有九种模式：1、L、P、RGB、RGBA、CMYK、YCbCr、I、F
         pil_image = Image.open(image_path).convert("L")
         # 图像转换为numpy
-        numpy_image = np.array(pil_image, np.int32)
-        # numpy_image = np.asarray(pil_image).astype('float32')
+        numpy_image = np.array(pil_image)
+        # numpy_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # 图像转换成灰度
         # 获取人脸特征
         image_faces = face_detector.detectMultiScale(numpy_image)
-        # 这张图对应的名字
-        name = os.path.split(image_path)[1].split(".")[0]
+        # 这张图对应的名字， 这里必须取数字否则训练的时候报错
+        name = int(os.path.split(image_path)[1].split(".")[0])
         for x, y, w, h in image_faces:
             result_names.append(name)
             result_face_samples.append(numpy_image[y:y + h, x:x + w])
-    return result_names, result_face_samples
+            # cv2.imshow("show", img_gray[y:y + h, x:x + w])
+            # cv2.waitKey(0)
+    return result_face_samples, result_names
 
 
 if __name__ == '__main__':
