@@ -1,32 +1,22 @@
 import time
 import pyttsx3
 
-text = """
-张孝祥·《浣溪沙》
-行尽潇湘到洞庭，
-楚天阔处数峰青，
-旗梢不动晚波平。
-红蓼一湾纹缬乱，
-白鱼双尾玉刀明，
-夜凉船影浸疏星。
-空灵澄澈，直可入梦。
-"""
-text2 = """
-哈哈哈哈哈
-哈哈哈哈哈
-哈哈哈哈哈
-哈哈哈哈哈
-哈哈哈哈哈
-哈哈哈哈哈
-"""
 
-engine = pyttsx3.init(debug=True)
-# engine.say(text)
-for i in text.split('\n'):
-    if i:
-        # engine.say(i)
-        print(i)
-        time.sleep(1)
-        engine.runAndWait()
-engine.save_to_file(text2, './common/abc2.mp3')
-engine.runAndWait()
+def create_voice(text, filename):
+    engine = pyttsx3.init(debug=True)  # 初始化语音
+    engine.setProperty("rate", 150)  # 设置语速，200正常 100慢
+    engine.setProperty("volume", 0.9)  # 设置音量
+    # voices = engine.getProperty("voices")  # 获取当前系统所有的发声
+    # for i in voices:
+    #     engine.setProperty("voice", i.id)
+    #     engine.say("我是一个兵，来自老百姓")
+    #     print(i)
+    #     engine.runAndWait()  # 阻塞把语句说完
+    engine.say(text)  # 将结果念出来
+    engine.save_to_file(text, filename)  # 保存音频文件
+    engine.runAndWait()  # 结束
+    engine.stop()  # 结束
+
+
+if __name__ == '__main__':
+    create_voice("hello i an great", "./a.mp4")
