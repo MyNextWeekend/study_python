@@ -1,28 +1,46 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2022/10/30 21:50
-# @Author  : hejinhu
 import os
-
 from locust.contrib.fasthttp import FastHttpUser
 from locust import task, constant
+import logging
 
 
-class MyUserBe(FastHttpUser):
+class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
+    host = r"https://www.baidu.com"  # 设置网站根地址
+
+    # constant(10)：常数（等待时间）
+    # between(1, 5)：执行后等待 1 到 5 秒
+    # constant_pacing(10)：任务将始终每 10 秒执行一次，如果一个任务执行超过了指定的wait_time，那么在开始下一个任务之前wait将为0。
     wait_time = constant(10)
 
     @task
-    def demo(self):
-        pass
+    def my_task1(self):
+        with self.client.get("/hello", catch_response=True, name="hello") as res:  # catch_response=true 可以自定义成功与失败
+            # {'request_type': 'GET', 'name': 'hello', 'context': {}, 'exception': None,
+            # 'response': <locust.contrib.fasthttp.FastResponse object at 0x107584160>,
+            # 'response_length': 203, 'response_time': 74}
+            logging.info(f"统计报告使用的元数据:{res.request_meta}")
 
-    # @task
-    # def my_task1(self):
-    #     with self.client.get("https://www.baidu.com/", catch_response=True) as res:
-    #         if res.status_code == 200:
-    #             print("成功")
-    #         else:
-    #             print("失败")
+            if res.status_code != 200:
+                logging.info("code err")
+                res.failure("code err")  # 将响应结果置为失败
+                return
+            if res.text == "":
+                logging.info("empty body")
+                res.failure("empty body")  # 将响应结果置为失败
+                return
+
+            res.success()  # 将响应结果置为成功
+
+    def on_start(self):
+        """用户启动的时候执行"""
+        logging.info("start")
+
+    def on_stop(self):
+        """用户停止的时候执行"""
+        logging.info("on_stop")
 
 
 if __name__ == '__main__':
-    # os.system(" locust -f main.py")
-    os.system(" locust -f main.py --master")
+    os.system(" locust -f locust_test.py")
+    # os.system(" locust -f locust_test.py --master")
