@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from locust.contrib.fasthttp import FastHttpUser
-from locust import task, constant
+from locust import task, constant, LoadTestShape
 import logging
 
 
@@ -39,6 +39,28 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
     def on_stop(self):
         """用户停止的时候执行"""
         logging.info("on_stop")
+
+
+class StagesShp(LoadTestShape):
+    """负载配置"""
+    stages = [
+        {"duration": 60, "users": 10, "spawn_rate": 10},
+        {"duration": 100, "users": 50, "spawn_rate": 10},
+        {"duration": 180, "users": 100, "spawn_rate": 10},
+        {"duration": 220, "users": 30, "spawn_rate": 10},
+        {"duration": 230, "users": 10, "spawn_rate": 10},
+        {"duration": 240, "users": 1, "spawn_rate": 1},
+    ]
+
+    def tick(self):
+        run_time = self.get_run_time()
+
+        for stage in self.stages:
+            if run_time < stage["duration"]:
+                tick_data = (stage["users"], stage["spawn_rate"])
+                return tick_data
+
+        return None
 
 
 if __name__ == '__main__':
