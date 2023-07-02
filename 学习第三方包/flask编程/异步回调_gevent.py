@@ -6,7 +6,7 @@ from gevent.pool import Pool
 monkey.patch_all()
 
 app = Flask(__name__)
-pool = Pool()
+pool = Pool()  # 协程池
 
 
 def async_callback(arg1, arg2):
