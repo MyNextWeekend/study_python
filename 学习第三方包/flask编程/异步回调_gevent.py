@@ -29,4 +29,8 @@ def callback():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    from gevent.pywsgi import WSGIServer
+
+    server = WSGIServer(("0.0.0.0", 8000), app)
+    server.serve_forever()
