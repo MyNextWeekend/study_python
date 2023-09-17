@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 from locust.contrib.fasthttp import FastHttpUser
 from locust import task, constant, LoadTestShape
 import logging
@@ -11,23 +10,24 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
     # constant(10)：常数（等待时间）
     # between(1, 5)：执行后等待 1 到 5 秒
     # constant_pacing(10)：任务将始终每 10 秒执行一次，如果一个任务执行超过了指定的wait_time，那么在开始下一个任务之前wait将为0。
-    wait_time = constant(10)
+    wait_time = constant(3)
 
     @task
     def my_task1(self):
+        # /hello 会自动拼接host地址组装实际请求地址
         with self.client.get("/hello", catch_response=True, name="hello") as res:  # catch_response=true 可以自定义成功与失败
             # {'request_type': 'GET', 'name': 'hello', 'context': {}, 'exception': None,
             # 'response': <locust.contrib.fasthttp.FastResponse object at 0x107584160>,
             # 'response_length': 203, 'response_time': 74}
-            logging.info(f"统计报告使用的元数据:{res.request_meta}")
+            logging.info(f"可以用于记录日志信息:{res.request_meta}")
 
             if res.status_code != 200:
                 logging.info("code err")
-                res.failure("code err")  # 将响应结果置为失败
+                res.failure("code err")  # 将响应结果置为失败并设置失败原因
                 return
-            if res.text == "":
+            if res.text == "":  # 根据接口响应类型采用res.text或者res.json() 用于断言响应结果
                 logging.info("empty body")
-                res.failure("empty body")  # 将响应结果置为失败
+                res.failure("empty body")  # 将响应结果置为失败并设置失败原因
                 return
 
             res.success()  # 将响应结果置为成功
@@ -62,7 +62,6 @@ class StagesShp(LoadTestShape):
 
         return None
 
-
-if __name__ == '__main__':
-    os.system(" locust -f locust_test.py")
-    # os.system(" locust -f locust_test.py --master")
+# if __name__ == '__main__':
+#     os.system(" locust -f locust_test.py")
+# os.system(" locust -f locust_test.py --master")
