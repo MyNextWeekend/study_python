@@ -1,7 +1,20 @@
 # -*- coding: utf-8 -*-
+import time
+
 from locust.contrib.fasthttp import FastHttpUser
-from locust import task, constant, LoadTestShape
+from locust import task, constant, LoadTestShape, events
 import logging
+
+
+@events.init_command_line_parser.add_listener
+def _(parser):  # 设置自定义参数
+    parser.add_argument("--organize", type=str, env_var="LOCUST_MY_ARGUMENT", default="商户A", help="针对特定场景")
+
+
+@events.test_start.add_listener
+def _(environment, **kw):  # 全局初始化一些东西的时候使用
+    my_arg = environment.parsed_options.organize
+    print(f"接收到参数:{my_arg}")
 
 
 class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
@@ -14,6 +27,8 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
 
     @task
     def my_task1(self):
+        print(f"my_argument={self.environment.parsed_options.organize}")  # 每个用户直接使用
+
         # /hello 会自动拼接host地址组装实际请求地址
         with self.client.get("/hello", catch_response=True, name="hello") as res:  # catch_response=true 可以自定义成功与失败
             # {'request_type': 'GET', 'name': 'hello', 'context': {}, 'exception': None,
