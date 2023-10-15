@@ -77,6 +77,9 @@ class StagesShp(LoadTestShape):
 
         return None
 
-# if __name__ == '__main__':
-#     os.system(" locust -f locust_test.py")
-# os.system(" locust -f locust_test.py --master")
+
+if __name__ == '__main__':
+    import os
+
+    os.system(" locust -f locust_test.py")
+    # os.system(" locust -f locust_test.py --master")
