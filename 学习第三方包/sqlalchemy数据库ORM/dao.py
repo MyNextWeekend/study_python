@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2023/4/30 15:17
 # @Author  : hejinhu
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import *
-
-Base = declarative_base()
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
-class People(Base):
-    __tablename__ = "people"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(64), unique=True)
-    password = Column(String(64))
-    address = Column(String(64))
-    age = Column(Integer)
-    birthday = Column(Date)
-    six = Column(String(64))
+class Base(AsyncAttrs, DeclarativeBase):
+    """基类"""
+    pass
+
+
+class Student(Base):
+    __tablename__ = "student"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    age: Mapped[int]
+    gender: Mapped[str]

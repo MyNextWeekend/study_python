@@ -1,98 +1,73 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2022/9/4 10:25
 # @Author  : hejinhu
+import asyncio
 import time
 
-from 学习第三方包.sqlalchemy数据库ORM.dao import People
-from 学习第三方包.sqlalchemy数据库ORM.properties import session_factory
+from orm_utils import db_orm
+from dao import Student
+from faker import Faker
+
+fake = Faker(locale='zh-CN')
+
+
+def split_list(obj_list: list, chunk_size: int):
+    for i in range(0, len(obj_list), chunk_size):
+        yield obj_list[i:i + chunk_size]
 
 
 def add():
     """新增一个"""
-    p = People()
-    p.name = '张三'
-    p.six = '女'
-    p.age = 18
-    p.address = '湖北'
-    p.birthday = '1998-05-20'
-    session = session_factory()
-    session.add(p)
+    stu = Student(name="张三", age=18, gender="难")
+    stu.gender = "什么鬼"
+    session = db_orm.get_session()
+    session.add(stu)
     session.commit()
 
 
-from faker import Faker
-
-f = Faker(locale='zh-CN')
-
-"""
-批量插入共有以下几种方法，对它们的批量做了比较，分别是：
-session.add_all() < bulk_save_object() < bulk_insert_mappings() < SQLAlchemy_core()
-"""
-
-
-def add_by_bulk_save_object():
+def add_by_bulk_save_object(objs):
     """批量增加-->bulk_save_object()"""
-    objs = []
-    for i in range(10000):
-        p = People()
-        p.name = f.name()
-        p.six = f.name()
-        p.age = f.pyint(min_value=0, max_value=9999, step=1)
-        p.address = f.address()
-        p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-        objs.append(p)
-    start = time.time()
-    session = session_factory()
-    session.bulk_save_objects(objs)
+    session = db_orm.get_session()
+    session.bulk_save_objects(objs)  # 0.5s/1000条
+    # session.add_all(objs)  # 13s/1000条
     session.commit()
-    print(time.time() - start)  # 30s
-
-
-def add_by_bulk_insert_mappings():
-    """批量增加-->bulk_insert_mappings()"""
-    objs = []
-    for i in range(100000):
-        p = People()
-        p.name = f.name()
-        p.six = f.name()
-        p.age = f.pyint(min_value=0, max_value=9999, step=1)
-        p.address = f.address()
-        p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-        a = vars(p)
-        a.pop('_sa_instance_state', None)
-        objs.append(a)
-    start = time.time()
-    session = session_factory()
-    session.bulk_insert_mappings(People, objs)
-    session.commit()
-    print(time.time() - start)  # 30s
-
-
-def add_by():
-    """批量增加-->__table__.insert()"""
-    objs = []
-    for i in range(10000):
-        p = People()
-        p.name = f.name()
-        p.six = f.name()
-        p.age = f.pyint(min_value=0, max_value=9999, step=1)
-        p.address = f.address()
-        p.birthday = f.date(pattern="%Y-%m-%d", end_datetime=None)
-        a = vars(p)
-        a.pop('_sa_instance_state', None)
-        objs.append(a)
-    start = time.time()
-    session = session_factory()
-    session.execute(
-        # People.__table__.insert().values(objs)  # 3.101
-        People.__table__.insert(), objs  # 2.766
-    )
-    session.commit()
-    print(time.time() - start)
 
 
 def select():
     """查询"""
-    session = session_factory()
-    a = session.query(People).filter(People.name == 'zhangsan').all()
+    session = db_orm.get_session()
+    a = session.query(Student).filter(Student.name == 'zhangsan').all()
     print(a)
+
+
+async def async_insert_many(objs):
+    """异步批量新增"""
+    task = []
+    for chunk in split_list(objs, 1000):
+        task.append(asyncio.create_task(db_orm.insert_objects(chunk)))
+
+    await asyncio.wait(task)  # 17s/10000条
+
+
+def creat_student(num: int) -> list:
+    res = []
+    for i in range(num):
+        stu = Student()
+        stu.name = fake.name
+        stu.age = fake.random_int()
+        stu.gender = fake.address
+        res.append(stu)
+    return res
+
+
+if __name__ == '__main__':
+    start = time.time()
+
+    # add_by_bulk_save_object(creat_student(1000))
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(
+        async_insert_many(creat_student(10000))
+    )
+
+    print(f"花费时间是：{time.time() - start}s")
