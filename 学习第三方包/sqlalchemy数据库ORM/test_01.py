@@ -2,6 +2,7 @@
 # @Time    : 2022/9/4 10:25
 # @Author  : hejinhu
 import asyncio
+import threading
 import time
 
 from orm_utils import db_orm
@@ -49,6 +50,14 @@ async def async_insert_many(objs):
     await asyncio.wait(task)  # 17s/10000条
 
 
+def insert_by_thead(objs):
+    ts = []
+    for i in split_list(objs, 1000):
+        ts.append(threading.Thread(add_by_bulk_save_object(i)))
+    for i in ts:
+        i.start()
+
+
 def creat_student(num: int) -> list:
     res = []
     for i in range(num):
@@ -63,11 +72,13 @@ def creat_student(num: int) -> list:
 if __name__ == '__main__':
     start = time.time()
 
-    # add_by_bulk_save_object(creat_student(1000))
+    # insert_by_thead(creat_student(10000))
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(
-        async_insert_many(creat_student(10000))
-    )
+    add_by_bulk_save_object(creat_student(10000))
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(
+    #     async_insert_many(creat_student(10000))
+    # )
 
     print(f"花费时间是：{time.time() - start}s")
