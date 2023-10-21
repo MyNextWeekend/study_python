@@ -5,6 +5,7 @@ import asyncio
 import threading
 import time
 
+from sqlalchemy import select
 from orm_utils import db_orm
 from dao import Student
 from faker import Faker
@@ -34,11 +35,12 @@ def add_by_bulk_save_object(objs):
     session.commit()
 
 
-def select():
+def find_all():
     """查询"""
     session = db_orm.get_session()
-    a = session.query(Student).filter(Student.name == 'zhangsan').all()
-    print(a)
+    sql = select(Student).where(Student.name.in_(["李伟", "钟成"]))
+    for i in session.scalars(sql):
+        print(i.name)
 
 
 async def async_insert_many(objs):
@@ -62,9 +64,9 @@ def creat_student(num: int) -> list:
     res = []
     for i in range(num):
         stu = Student()
-        stu.name = fake.name
+        stu.name = fake.name()
         stu.age = fake.random_int()
-        stu.gender = fake.address
+        stu.gender = fake.address()
         res.append(stu)
     return res
 
@@ -72,13 +74,15 @@ def creat_student(num: int) -> list:
 if __name__ == '__main__':
     start = time.time()
 
-    # insert_by_thead(creat_student(10000))
+    find_all()
 
-    add_by_bulk_save_object(creat_student(10000))
+    # insert_by_thead(creat_student(10000))  # 2.0
+
+    # add_by_bulk_save_object(creat_student(10000))  # 1.69
 
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(
-    #     async_insert_many(creat_student(10000))
+    #     async_insert_many(creat_student(10000))  # 16.69
     # )
 
     print(f"花费时间是：{time.time() - start}s")
