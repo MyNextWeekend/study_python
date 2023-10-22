@@ -12,15 +12,15 @@ def current_time():
 
 
 async def do_something():
-    print('方法开始')
+    print(f'{current_time()} 方法开始')
     await asyncio.sleep(3)
-    print('方法结束')
+    print(f'{current_time()} 方法结束')
 
 
 def do_some():
-    print('方法开始')
+    print(f'{current_time()} 方法开始')
     time.sleep(3)
-    print('方法结束')
+    print(f'{current_time()} 方法结束')
 
 
 def do():
@@ -56,5 +56,5 @@ def do_process():
 
 
 if __name__ == '__main__':
-    do_process()
+    do()
     print("done")
