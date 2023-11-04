@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import time
-
 from locust.contrib.fasthttp import FastHttpUser
 from locust import task, constant, LoadTestShape, events
 import logging
