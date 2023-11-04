@@ -18,10 +18,34 @@ def split_list(obj_list: list, chunk_size: int):
         yield obj_list[i:i + chunk_size]
 
 
+def creat_student():
+    """构建一个学生对象"""
+    stu = Student()
+    stu.name = fake.name()
+    stu.age = fake.random_int()
+    stu.gender = fake.address()
+    return stu
+
+
+def build_many_students(num: int) -> list:
+    """创建多个学生对象"""
+    res = []
+    for i in range(num):
+        res.append(creat_student())
+    return res
+
+
+def find_all():
+    """查询"""
+    session = db_orm.get_session()
+    sql = select(Student).where(Student.name.in_(["李伟", "钟成"]))
+    for i in session.scalars(sql):
+        print(i.name)
+
+
 def add():
     """新增一个"""
-    stu = Student(name="张三", age=18, gender="难")
-    stu.gender = "什么鬼"
+    stu = creat_student
     session = db_orm.get_session()
     session.add(stu)
     session.commit()
@@ -35,40 +59,22 @@ def add_by_bulk_save_object(objs):
     session.commit()
 
 
-def find_all():
-    """查询"""
-    session = db_orm.get_session()
-    sql = select(Student).where(Student.name.in_(["李伟", "钟成"]))
-    for i in session.scalars(sql):
-        print(i.name)
-
-
 async def async_insert_many(objs):
     """异步批量新增"""
-    task = []
-    for chunk in split_list(objs, 1000):
-        task.append(asyncio.create_task(db_orm.insert_objects(chunk)))
+    jobs = []
+    for chunk in split_list(objs, 1000):  # 协程数量过多会导致数据库连接池爆
+        jobs.append(asyncio.create_task(db_orm.insert_objects(chunk)))
 
-    await asyncio.wait(task)  # 17s/10000条
+    await asyncio.wait(jobs)  # 17s/10000条
 
 
 def insert_by_thead(objs):
-    ts = []
-    for i in split_list(objs, 1000):
-        ts.append(threading.Thread(add_by_bulk_save_object(i)))
-    for i in ts:
-        i.start()
-
-
-def creat_student(num: int) -> list:
-    res = []
-    for i in range(num):
-        stu = Student()
-        stu.name = fake.name()
-        stu.age = fake.random_int()
-        stu.gender = fake.address()
-        res.append(stu)
-    return res
+    """多线程写入"""
+    jobs = []
+    for chunk in split_list(objs, 1000):
+        jobs.append(threading.Thread(add_by_bulk_save_object(chunk)))
+    for job in jobs:
+        job.start()
 
 
 if __name__ == '__main__':
@@ -76,13 +82,13 @@ if __name__ == '__main__':
 
     find_all()
 
-    # insert_by_thead(creat_student(10000))  # 2.0
+    # insert_by_thead(build_many_students(10000))  # 2.0
 
-    # add_by_bulk_save_object(creat_student(10000))  # 1.69
+    # add_by_bulk_save_object(build_many_students(10000))  # 1.69
 
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(
-    #     async_insert_many(creat_student(10000))  # 16.69
+    #     async_insert_many(build_many_students(10000))  # 16.69
     # )
 
     print(f"花费时间是：{time.time() - start}s")
