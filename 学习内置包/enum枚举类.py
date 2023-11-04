@@ -5,17 +5,19 @@ from enum import Enum, auto
 
 
 class Param(Enum):
-    aaa1 = auto()
-    aaa2 = auto()
-    aaa3 = 100
-    aaa4 = auto()
-    aaa5 = auto()
+    red = auto()  # 1
+    orange = auto()  # 2
+    yellow = 100  # 100
+    green = auto()  # 101
+    blue = auto()  # 102
+    purple = auto()  # 103
 
 
-print(Param.__dict__)
-print(dir(Param))
-print(Param.aaa1.name, Param.aaa1.value)
-print(Param.aaa2.name, Param.aaa2.value)
-print(Param.aaa3.name, Param.aaa3.value)
-print(Param.aaa4.name, Param.aaa4.value)
-print(Param.aaa5.name, Param.aaa5.value)
+if __name__ == '__main__':
+    print(Param.__dict__)
+    print(dir(Param))
+    print(Param.red.name, Param.red.value)
+    print(Param.orange.name, Param.orange.value)
+    print(Param.yellow.name, Param.yellow.value)
+    print(Param.green.name, Param.green.value)
+    print(Param.blue.name, Param.blue.value)
