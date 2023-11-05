@@ -3,6 +3,7 @@
 # @Author  : hejinhu
 import asyncio
 import datetime
+import threading
 
 
 def current_time():
@@ -24,6 +25,44 @@ def run():
     print(f'func run end: {current_time()}')
 
 
+def run_coroutine_in_thread():
+    """在线程中运行协程"""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    # return_exceptions 将异常作为返回值，避免影响其他coroutine的运行
+    futures = asyncio.gather(do_something(), do_something(), do_something(), return_exceptions=True)
+    loop.run_until_complete(futures)
+    loop.close()
+
+
+class MyThread(threading.Thread):
+    def __init__(self):
+        super().__init__()
+        self.tasks = []
+
+    def set_task(self, task):
+        self.tasks.append(task)
+
+    def run(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        # return_exceptions 将异常作为返回值，避免影响其他coroutine的运行
+        futures = asyncio.gather(*self.tasks, return_exceptions=True)
+        loop.run_until_complete(futures)
+        loop.close()
+
+
 if __name__ == '__main__':
-    run()
+    # run()  # 方式一：直接启动协程处理
+
+    # t = threading.Thread(target=run_coroutine_in_thread)  # 方式二：创建线程并运行协程
+    # t.start()
+    # t.join()
+
+    t = MyThread()  # 方式三：自定义类继承Thread，启用协程任务
+    t.set_task(do_something())
+    t.set_task(do_something())
+    t.set_task(do_something())
+    t.start()
+    t.join()
     print("main done...")
