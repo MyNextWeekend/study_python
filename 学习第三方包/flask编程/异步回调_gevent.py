@@ -1,7 +1,10 @@
+from multiprocessing import Process
 from flask import Flask
-import gevent
-from gevent import monkey
+import time
+
 from gevent.pool import Pool
+from gevent.pywsgi import WSGIServer
+from gevent import monkey
 
 monkey.patch_all()
 
@@ -11,7 +14,7 @@ pool = Pool()  # 协程池
 
 def async_callback(arg1, arg2):
     # 模拟异步回调逻辑，这里使用 gevent.sleep() 来模拟耗时操作
-    gevent.sleep(5)
+    time.sleep(5)
     result = f"Callback complete with args: {arg1}, {arg2}"
     print(result)
 
@@ -30,7 +33,17 @@ def callback():
 
 if __name__ == '__main__':
     # app.run(debug=True)
-    from gevent.pywsgi import WSGIServer
+    # 启动 一个进程+协程 处理
+    # server = WSGIServer(("0.0.0.0", 8000), app)
+    # server.serve_forever()
 
+    # 方式二：启动 多个进程+协程 处理
     server = WSGIServer(("0.0.0.0", 8000), app)
-    server.serve_forever()
+    server.start()
+
+    def server_forever():
+        server.start_accepting()
+        server.stop_event.wait()
+    for i in range(3):  # 此处代表启动多个进程任务
+        p = Process(target=server_forever)
+        p.start()
