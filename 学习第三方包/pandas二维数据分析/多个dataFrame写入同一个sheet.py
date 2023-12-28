@@ -7,8 +7,7 @@ data_json = {
     "年龄": [20, 23, 26, 29, 32, 35, 38, 41]
 }
 
-file_name = "./result.xlsx"
-writer = pd.ExcelWriter(file_name, engine="openpyxl")
+writer = pd.ExcelWriter("./result.xlsx", engine="openpyxl")
 start_row = 3
 for i in range(10):
     data = pd.DataFrame(data_json)
@@ -16,5 +15,4 @@ for i in range(10):
     data.to_excel(writer, sheet_name="hello", startrow=start_row, index=False)
     start_row = start_row + data.shape[0] + 5  # 标题占1行，空4行
 
-# writer.save()
 writer.close()
