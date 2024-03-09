@@ -4,7 +4,7 @@ import psutil
 
 # 获取CPU使用百分比
 cpu_percent = psutil.cpu_percent()
-print(f"CPU使用率11main：{cpu_percent}%")
+print(f"CPU使用率11main--main02：{cpu_percent}%")
 
 # 获取CPU逻辑核心数
 cpu_count = psutil.cpu_count()
