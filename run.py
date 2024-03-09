@@ -8,7 +8,7 @@ print(f"CPU使用率11main--main02--main03：{cpu_percent}%")
 
 # 获取CPU逻辑核心数
 cpu_count = psutil.cpu_count()
-print(f"CPU逻辑核心数test：{cpu_count}")
+print(f"CPU逻辑核心数testmain：{cpu_count}")
 
 # 获取CPU物理核心数
 cpu_count_logical = psutil.cpu_count(logical=False)
