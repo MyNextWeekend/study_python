@@ -41,11 +41,7 @@ if __name__ == '__main__':
         create_date = today - datetime.timedelta(days=i)
         for j in range(1000000):
             insert_arg.append(
-                (random.choice(["111", "222", "333", "444"]),
-                 f"{i}-{j}",
-                 create_date,
-                 create_date,
-                 create_date)
+                (random.choice(["111", "222", "333", "444"]), f"{i}-{j}", create_date, create_date, create_date)
             )
             if j % 10000 == 0:
                 res = mysql.insert_many(insert_sql, insert_arg)
