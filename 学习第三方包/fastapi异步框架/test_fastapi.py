@@ -1,6 +1,6 @@
 from typing import Any, Union, Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
 
 from utils.log_utils import SingletonLog
@@ -17,10 +17,12 @@ class ItemRes(BaseModel):
     tags: list[str] = []
 
 
-@app.post("/items/", response_model=ItemRes)
-async def create_item(item: ItemRes) -> Any:
-    log.info(item)
-    return item
+@app.post("/items/")
+async def create_item(file: UploadFile) -> Any:
+    log.info(f"收到文件的名称是：{file.filename}")
+    log.info(f"收到文件的大小是：{file.size}")
+    contents = await file.read()
+    return contents
 
 
 @app.get("/items/{item_id}")
