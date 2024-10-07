@@ -1,0 +1,47 @@
+[project]
+name = "study-python"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "MyNextWeekend", email = "jinhu007@outlook.com" }
+]
+dependencies = [
+    "pandas>=2.2.3",
+    "requests>=2.32.3",
+    "numpy>=2.1.1",
+    "flask>=3.0.3",
+    "fastapi>=0.115.0",
+    "drissionpage>=4.1.0.6",
+    "faker>=30.1.0",
+    "gevent>=24.2.1",
+    "pymysql>=1.1.1",
+    "selenium>=4.25.0",
+    "sqlalchemy>=2.0.35",
+    "opencv-python>=4.10.0.84",
+    "locust>=2.31.8",
+    "pywifi>=1.1.12",
+    "pyautogui>=0.9.54",
+    "uvicorn>=0.31.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+# 配置下载源地址
+[[tool.rye.sources]]
+name = "default"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/study_python"]
