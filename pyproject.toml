@@ -23,6 +23,7 @@ dependencies = [
     "pyautogui>=0.9.54",
     "uvicorn>=0.31.0",
     "docker>=7.1.0",
+    "gitpython>=3.1.43",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
