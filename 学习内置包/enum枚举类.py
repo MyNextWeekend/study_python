@@ -16,6 +16,18 @@ class Param(Enum):
     PURPLE = auto()  # 103
 
 
+class ColorParam(str, Enum):
+    """
+    枚举类
+    """
+    RED = "red"
+    ORANGE = "orange"
+    YELLOW = "yellow"
+    GREEN = "green"
+    BLUE = "blue"
+    PURPLE = "purple"
+
+
 class Color(Flag):
     """
     区别与Enum 主要可以做到判断一个具体枚举 是否存在一个枚举集合中
@@ -36,6 +48,9 @@ if __name__ == '__main__':
     print(Param.YELLOW.name, Param.YELLOW.value)
     print(Param.GREEN.name, Param.GREEN.value)
     print(Param.BLUE.name, Param.BLUE.value)
+
+    print(f"输入的值是red:{ColorParam.RED == 'red'}")
+    print(f"有一个枚举是:{ColorParam.RED.value}")
 
     print("=" * 20)
     print(Color.__dict__)
