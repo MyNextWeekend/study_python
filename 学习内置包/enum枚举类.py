@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2022/12/31 09:39
 # @Author  : MyNextWeekend
-from enum import Enum, auto, Flag
+from enum import Enum, auto, Flag, StrEnum
 
 
 class Param(Enum):
@@ -16,11 +16,12 @@ class Param(Enum):
     PURPLE = auto()  # 103
 
 
-class ColorParam(str, Enum):
+# class ColorParam(str, Enum): # 字符串枚举
+class ColorParam(StrEnum):
     """
     枚举类
     """
-    RED = "red"
+    RED = auto()
     ORANGE = "orange"
     YELLOW = "yellow"
     GREEN = "green"
