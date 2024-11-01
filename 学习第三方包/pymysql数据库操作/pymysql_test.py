@@ -20,21 +20,20 @@ class MySQLDatabase:
         self.user = USER
         self.password = PASSWORD
         self.database = DATABASE
-        self.connection = None
+        self.connection: pymysql.Connection | None = None
 
     def _connect(self):
         """连接到数据库"""
-        if self.connection is not None:
-            return
-        self.connection = pymysql.connect(
-            host=self.host,
-            user=self.user,
-            password=self.password,
-            database=self.database,
-            port=self.port,
-            charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor  # 指示游标以字典的形式返回查询结果
-        )
+        if self.connection is None or not self.connection.open:
+            self.connection = pymysql.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database,
+                port=self.port,
+                charset='utf8mb4',
+                cursorclass=pymysql.cursors.DictCursor  # 指示游标以字典的形式返回查询结果
+            )
 
     def close(self):
         """关闭数据库连接"""
@@ -43,28 +42,28 @@ class MySQLDatabase:
         self.connection.close()
         self.connection = None
 
-    def query(self, query, params=None):
+    def query(self, sql: str, params=None):
         """执行查询并返回结果"""
         self._connect()
         with self.connection.cursor() as cursor:
-            cursor.execute(query, params)
+            cursor.execute(sql, params)
             result = cursor.fetchall()
         return result
 
-    def execute(self, query, params=None):
-        """执行非查询操作（INSERT, UPDATE, DELETE）"""
+    def execute(self, sql: str, params: tuple[any, ...] | None = None):
+        """执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
         result = 0
         try:
             with self.connection.cursor() as cursor:
-                result = cursor.execute(query, params)
+                result = cursor.execute(sql, params)
             self.connection.commit()  # 提交事务
         except Exception as e:
             self.connection.rollback()  # 回滚事务
             print(f"execute sql err:{e}")  # 可以选择重新抛出异常或处理异常
         return result
 
-    def executemany(self, query, params_list):
+    def executemany(self, query: str, params_list: list[any]):
         """批量执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
         try:
@@ -73,7 +72,7 @@ class MySQLDatabase:
             self.connection.commit()  # 提交事务
         except Exception as e:
             self.connection.rollback()  # 回滚事务
-            raise e  # 可以选择重新抛出异常或处理异常
+            print(f"executemany sql error: {e}")  # 处理异常
 
     def __del__(self):
         self.close()
@@ -94,5 +93,5 @@ if __name__ == "__main__":
                    f"666",
                    datetime.datetime.now(),
                    datetime.datetime.now(),
-                   datetime.datetime.now())
-               )
+                   datetime.datetime.now()
+               ))
