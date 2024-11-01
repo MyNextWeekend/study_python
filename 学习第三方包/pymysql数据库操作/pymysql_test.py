@@ -3,50 +3,96 @@
 # @Author  : MyNextWeekend
 import datetime
 import random
-import time
 
 import pymysql
 
+HOST = "106.55.186.222"
+PORT = 3306
+USER = "study_python"
+PASSWORD = "nTMX8sPDSrsHzLC7"
+DATABASE = "study_python"
 
-class MysqlUtil:
+
+class MySQLDatabase:
     def __init__(self):
-        self.conn = pymysql.Connect(host="106.55.186.222", port=3306,
-                                    user="study_python", password="nTMX8sPDSrsHzLC7",
-                                    database="study_python")
-        self.cursor = self.conn.cursor()
+        self.host = HOST
+        self.port = PORT
+        self.user = USER
+        self.password = PASSWORD
+        self.database = DATABASE
+        self.connection = None
 
-    def insert_many(self, sql, insert_args=None):
+    def _connect(self):
+        """连接到数据库"""
+        if self.connection is not None:
+            return
+        self.connection = pymysql.connect(
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database,
+            port=self.port,
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor  # 指示游标以字典的形式返回查询结果
+        )
+
+    def close(self):
+        """关闭数据库连接"""
+        if not self.connection:
+            return
+        self.connection.close()
+        self.connection = None
+
+    def query(self, query, params=None):
+        """执行查询并返回结果"""
+        self._connect()
+        with self.connection.cursor() as cursor:
+            cursor.execute(query, params)
+            result = cursor.fetchall()
+        return result
+
+    def execute(self, query, params=None):
+        """执行非查询操作（INSERT, UPDATE, DELETE）"""
+        self._connect()
+        result = 0
         try:
-            result = self.cursor.executemany(sql, insert_args)
-            self.conn.commit()
-            return result
+            with self.connection.cursor() as cursor:
+                result = cursor.execute(query, params)
+            self.connection.commit()  # 提交事务
         except Exception as e:
-            print(e)
-            self.conn.rollback()
+            self.connection.rollback()  # 回滚事务
+            print(f"execute sql err:{e}")  # 可以选择重新抛出异常或处理异常
+        return result
 
-    def query_sql(self, sql):
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
+    def executemany(self, query, params_list):
+        """批量执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
+        self._connect()
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.executemany(query, params_list)
+            self.connection.commit()  # 提交事务
+        except Exception as e:
+            self.connection.rollback()  # 回滚事务
+            raise e  # 可以选择重新抛出异常或处理异常
+
+    def __del__(self):
+        self.close()
 
 
-if __name__ == '__main__':
-    # mysql = MysqlUtil()
-    # res = mysql.query_sql("select * from student")
-    # print(res)
-    mysql = MysqlUtil()
-    today = datetime.datetime.now()
-    for i in range(30):
-        insert_arg = []
-        insert_sql = "insert student (name,call_id,start_time,end_time,create_date) value (%s,%s,%s,%s,%s)"
-        create_date = today - datetime.timedelta(days=i)
-        for j in range(1000000):
-            insert_arg.append(
-                (random.choice(["111", "222", "333", "444"]), f"{i}-{j}", create_date, create_date, create_date)
-            )
-            if j % 10000 == 0:
-                res = mysql.insert_many(insert_sql, insert_arg)
-                print(f"进度：{i}--{j} 结果是：{res}")
-                insert_arg = []
+# 使用示例
+if __name__ == "__main__":
+    db = MySQLDatabase()
 
-        res = mysql.insert_many(insert_sql, insert_arg)
-        print(res)
+    # 执行查询
+    results = db.query("SELECT * FROM student limit 10;")
+    print(results)
+
+    # 执行非查询
+    db.execute("INSERT INTO student (name,call_id,start_time,end_time,create_date) VALUES (%s, %s, %s, %s, %s)",
+               (
+                   random.choice(["111", "222", "333", "444"]),
+                   f"666",
+                   datetime.datetime.now(),
+                   datetime.datetime.now(),
+                   datetime.datetime.now())
+               )
