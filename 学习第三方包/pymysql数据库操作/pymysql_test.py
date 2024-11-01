@@ -66,13 +66,15 @@ class MySQLDatabase:
     def executemany(self, query: str, params_list: list[any]):
         """批量执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
+        result = 0
         try:
             with self.connection.cursor() as cursor:
-                cursor.executemany(query, params_list)
+                result = cursor.executemany(query, params_list)
             self.connection.commit()  # 提交事务
         except Exception as e:
             self.connection.rollback()  # 回滚事务
             print(f"executemany sql error: {e}")  # 处理异常
+        return result
 
     def __del__(self):
         self.close()
