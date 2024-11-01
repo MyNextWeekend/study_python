@@ -42,7 +42,7 @@ class MySQLDatabase:
         self.connection.close()
         self.connection = None
 
-    def query(self, sql: str, params=None):
+    def query(self, sql: str, params=None) -> any:
         """执行查询并返回结果"""
         self._connect()
         with self.connection.cursor() as cursor:
@@ -50,7 +50,7 @@ class MySQLDatabase:
             result = cursor.fetchall()
         return result
 
-    def execute(self, sql: str, params: tuple[any, ...] | None = None):
+    def execute(self, sql: str, params: tuple[any, ...] | None = None) -> int:
         """执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
         result = 0
@@ -63,7 +63,7 @@ class MySQLDatabase:
             print(f"execute sql err:{e}")  # 可以选择重新抛出异常或处理异常
         return result
 
-    def executemany(self, query: str, params_list: list[any]):
+    def executemany(self, query: str, params_list: list[any]) -> int:
         """批量执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
         result = 0
