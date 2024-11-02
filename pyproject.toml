@@ -1,5 +1,5 @@
 [project]
-name = "study-python"
+name = "study_python"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
@@ -41,11 +41,10 @@ dev-dependencies = []
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/study_python"]
+
 # 配置下载源地址
 [[tool.rye.sources]]
 name = "default"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
-
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/study_python"]
