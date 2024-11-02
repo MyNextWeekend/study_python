@@ -42,6 +42,7 @@ class MySQLDatabase:
         if self.connection.open:
             self.connection.close()
         self.connection = None
+        print("close end")
 
     def query(self, sql: str, params=None) -> any:
         """执行查询并返回结果"""
@@ -78,6 +79,7 @@ class MySQLDatabase:
         return result
 
     def __del__(self):
+        print("do __del__")
         self.close()
 
 
@@ -88,7 +90,6 @@ if __name__ == "__main__":
     # 执行查询
     results = db.query("SELECT * FROM student limit 10;")
     print(results)
-
     # 执行非查询
     db.execute("INSERT INTO student (name,call_id,start_time,end_time,create_date) VALUES (%s, %s, %s, %s, %s)",
                (
