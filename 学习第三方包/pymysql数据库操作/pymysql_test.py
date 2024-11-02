@@ -39,7 +39,8 @@ class MySQLDatabase:
         """关闭数据库连接"""
         if not self.connection:
             return
-        self.connection.close()
+        if self.connection.open:
+            self.connection.close()
         self.connection = None
 
     def query(self, sql: str, params=None) -> any:
@@ -63,13 +64,13 @@ class MySQLDatabase:
             print(f"execute sql err:{e}")  # 可以选择重新抛出异常或处理异常
         return result
 
-    def executemany(self, query: str, params_list: list[any]) -> int:
+    def executemany(self, sql: str, params_list: list[any]) -> int:
         """批量执行非查询操作（INSERT, UPDATE, DELETE），支持事务"""
         self._connect()
         result = 0
         try:
             with self.connection.cursor() as cursor:
-                result = cursor.executemany(query, params_list)
+                result = cursor.executemany(sql, params_list)
             self.connection.commit()  # 提交事务
         except Exception as e:
             self.connection.rollback()  # 回滚事务
