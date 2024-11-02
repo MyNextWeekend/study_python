@@ -6,9 +6,10 @@ authors = [
     { name = "MyNextWeekend", email = "jinhu007@outlook.com" }
 ]
 dependencies = [
-    "pandas>=2.2.3",
+    "locust>=2.25.0",
+    "pandas>=2.0.3",
+    "numpy>=1.24.4",
     "requests>=2.32.3",
-    "numpy>=2.1.1",
     "flask>=3.0.3",
     "fastapi>=0.115.0",
     "drissionpage>=4.1.0.6",
@@ -18,7 +19,6 @@ dependencies = [
     "selenium>=4.25.0",
     "sqlalchemy>=2.0.35",
     "opencv-python>=4.10.0.84",
-    "locust>=2.31.8",
     "pywifi>=1.1.12",
     "pyautogui>=0.9.54",
     "uvicorn>=0.31.0",
