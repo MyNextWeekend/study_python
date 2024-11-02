@@ -73,8 +73,7 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
+
 
 # celery beat schedule common
 celerybeat-schedule
@@ -105,5 +104,3 @@ venv.bak/
 .mypy_cache/
 /学习第三方包/opencv图像处理/trainer/
 
-# rye工具
-requirements*.lock
