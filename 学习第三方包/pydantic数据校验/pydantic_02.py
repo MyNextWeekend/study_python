@@ -22,8 +22,9 @@ if __name__ == '__main__':
     banana = Product(
         name='香蕉',
         category="水果",
-        shipping_weight=-10.83,
+        shipping_weight=10.83,
         unit_price=100,
         tax_percent=0.5,
     )
     print(f"{banana.tax=}")
+    print(f"{banana.model_dump()}")
