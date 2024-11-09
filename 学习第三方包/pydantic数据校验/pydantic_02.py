@@ -1,11 +1,19 @@
+from enum import StrEnum, auto
+
 from pydantic import BaseModel, PositiveFloat, PositiveInt, Field
+
+
+class CategoryEnum(StrEnum):
+    FRUIT = auto()
+    MEATS = auto()
+    FISH = auto()
 
 
 class Product(BaseModel):
     # 名称
     name: str
     # 类别
-    category: str
+    category: CategoryEnum
     # 重量
     shipping_weight: PositiveFloat
     # 单价
@@ -21,10 +29,10 @@ class Product(BaseModel):
 if __name__ == '__main__':
     banana = Product(
         name='香蕉',
-        category="水果",
+        category="fruit",
         shipping_weight=10.83,
         unit_price=100,
         tax_percent=0.5,
     )
     print(f"{banana.tax=}")
-    print(f"{banana.model_dump()}")
+    print(f"{banana.model_dump_json()}")
