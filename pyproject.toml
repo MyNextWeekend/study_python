@@ -2,9 +2,12 @@
 name = "study_python"
 version = "0.1.0"
 description = "Add your description here"
+requires-python = ">= 3.8"
+readme = "README.md"
 authors = [
     { name = "MyNextWeekend", email = "jinhu007@outlook.com" }
 ]
+
 dependencies = [
     "locust>=2.25.0",
     "pandas>=2.0.3",
@@ -28,8 +31,6 @@ dependencies = [
     "elasticsearch>=8.15.1",
     "sqlmodel>=0.0.22",
 ]
-readme = "README.md"
-requires-python = ">= 3.8"
 
 [build-system]
 requires = ["hatchling"]
