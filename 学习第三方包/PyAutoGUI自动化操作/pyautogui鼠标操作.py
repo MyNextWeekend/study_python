@@ -21,10 +21,14 @@ pyautogui.moveRel(300, 300, 1)
 pyautogui.click(200, 400, button='right')
 
 # 通过图片找到位置
-notion = pyautogui.locateOnScreen("message.png")
+notion = pyautogui.locateOnScreen("bilibili.png")
 print(notion)
 notion_point = pyautogui.center(notion)
 print(notion_point)
 pyautogui.click(notion_point.x, notion_point.y)
 time.sleep(2)
 pyautogui.doubleClick(notion_point)
+
+# 弹窗交互
+pyautogui.alert(text="确定要做什么吗？", title="标题AAAAA")
+time.sleep(5)
