@@ -47,23 +47,26 @@ packages = ["src/study_python"]
 [tool.uv]
 index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
-
 [tool.ruff.lint]
 select = [
-    'F',      # Pyflakes
-    'E',      # pycodestyle (Error)
-    'I',      # isort
-    'D',      # pydocstyle
-    'UP',     # pyupgrade
-    'YTT',    # flake8-2020
-    'B',      # flake8-bugbear
-    'T10',    # flake8-debugger
-    'T20',    # flake8-print
-    'C4',     # flake8-comprehensions
-    'PYI006', # flake8-pyi
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
 ]
-ignore = ['D105', 'D107', 'D205', 'D415', 'E501', 'B011', 'B028', 'B904']
-flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
-isort = { known-first-party = ['pydantic', 'tests'] }
-mccabe = { max-complexity = 14 }
-pydocstyle = { convention = 'google' }
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+    "W191", # indentation contains tabs
+]
+
+[tool.ruff.lint.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
