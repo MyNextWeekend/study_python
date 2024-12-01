@@ -1,7 +1,7 @@
 [project]
 name = "study_python"
 version = "0.1.0"
-description = "Add your description here"
+description = "用于个人学习记录"
 requires-python = ">= 3.8"
 readme = "README.md"
 authors = [
