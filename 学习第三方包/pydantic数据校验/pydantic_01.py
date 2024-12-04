@@ -1,8 +1,13 @@
-import json
 from datetime import datetime
 from typing import Self
 
-from pydantic import BaseModel, PositiveInt, field_validator, model_validator, field_serializer
+from pydantic import (
+    BaseModel,
+    PositiveInt,
+    field_serializer,
+    field_validator,
+    model_validator,
+)
 
 
 class User(BaseModel):
@@ -44,6 +49,7 @@ external_data = {
         'cheese': 7,
         'cabbage': '1',
     },
+    'other': "haha"  # 多余的字段不影响转换
 }
 
 # 从字典解包创建对象
