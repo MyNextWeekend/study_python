@@ -1,7 +1,7 @@
 import datetime
 
-from sqlmodel import SQLModel, Field, select, Session
-from orm_utils import engine
+from sqlmodel import Field, Session, SQLModel, select
+from sqlmodel_utils import DBEnum, SQLModelUtil
 
 
 class Student(SQLModel, table=True):
@@ -13,28 +13,27 @@ class Student(SQLModel, table=True):
     create_date: datetime.datetime = Field(nullable=True)
 
 
-if __name__ == '__main__':
-    with Session(engine) as session:
-        statement = select(Student).where(Student.id > 9999).limit(20)
-        # 批量查询
-        students = session.exec(statement)
-        for stu in students:
-            # 删除
-            if stu.id == 593711:
-                session.delete(stu)
-                session.commit()
-            # 修改
-            if stu.name == "0-1":
-                stu.name = "李四"
-                session.commit()
-            print(stu)
-        # 新增
-        user = Student(
-            name="张三",
-            call_id="123456",
-            start_time=datetime.datetime.now(),
-            end_time=datetime.datetime.now(),
-            create_date=datetime.datetime.now(),
-        )
-        session.add(user)
-        session.commit()
+if __name__ == "__main__":
+    db = SQLModelUtil(DBEnum.UAT, "fms")
+
+    statement = select(Student).where(Student.id > 9999).limit(20)
+    # 批量查询
+    students = db.query_all(statement)
+    for stu in students:
+        # 删除
+        if stu.id == 593711:
+            db.delete(stu)
+        # 修改
+        if stu.name == "0-1":
+            stu.name = "李四"
+            db.update(stu)
+        print(stu)
+    # 新增
+    user = Student(
+        name="张三",
+        call_id="123456",
+        start_time=datetime.datetime.now(),
+        end_time=datetime.datetime.now(),
+        create_date=datetime.datetime.now(),
+    )
+    db.add(user)
