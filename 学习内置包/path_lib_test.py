@@ -11,4 +11,6 @@ print(f"拼接一个文件：{path.joinpath('test.py')}")
 
 # 如果文件不存在，就创建一个
 # pathlib.Path("./path_lib_test1.py").touch()
+# 文件路径不存在即新建，如果存在也不报错
+# pathlib.Path("./hello").joinpath("world").mkdir(parents=True, exist_ok=True)
 
