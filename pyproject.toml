@@ -31,6 +31,7 @@ dependencies = [
     "elasticsearch>=8.15.1",
     "sqlmodel>=0.0.22",
     "pytest>=8.3.3",
+    "python-dotenv>=1.0.1",
 ]
 
 [tool.hatch.metadata]
@@ -44,8 +45,8 @@ build-backend = "hatchling.build"
 packages = ["src/study_python"]
 
 # 配置下载源地址
-[tool.uv]
-index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+#[tool.uv]
+#index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [tool.ruff.lint]
 select = [

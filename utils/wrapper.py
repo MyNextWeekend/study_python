@@ -15,7 +15,7 @@ def singleton(cls):
         if it is not None:
             return it
 
-        cls.__it__ = it = cls.__new_original__(cls, *args, **kw)
+        cls.__it__ = it = cls.__new_original__(cls)
         it.__init_original__(*args, **kw)
         return it
 
@@ -24,3 +24,20 @@ def singleton(cls):
     cls.__init__ = object.__init__
 
     return cls
+
+
+# def singleton(cls):
+#     """
+#     将一个类作为单例
+#     """
+#     # 缓存实例
+#     instances = {}
+#
+#     @functools.wraps(cls)
+#     def wrapper(*args, **kwargs):
+#         if cls not in instances:
+#             # 创建类的实例并缓存
+#             instances[cls] = cls(*args, **kwargs)
+#         return instances[cls]
+#
+#     return wrapper
