@@ -13,7 +13,7 @@ def load_env_variables():
     # 获取当前环境，默认为开发环境
     environment = os.getenv("ENVIRONMENT", "dev")
     # 加载对应环境的 .env 文件
-    env_file = f"{BASE_PATH}/.env.{environment}"
+    env_file = os.path.join(BASE_PATH, f".env.{environment}")
     print(f"正在加载环境变量:{env_file}")
     load_dotenv(env_file)  # 如果不传入参数，默认找根目录下.env文件
 
