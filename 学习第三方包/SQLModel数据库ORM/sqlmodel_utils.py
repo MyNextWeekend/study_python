@@ -4,13 +4,13 @@ from sqlmodel import Session, SQLModel, create_engine, text
 
 
 class DBEnum(str, Enum):
-    SIT = ""
+    SIT = "mysql+pymysql://root:123456@127.0.0.1:3306"
     UAT = "mysql+pymysql://study_python:nTMX8sPDSrsHzLC7@106.55.186.222:3306"
 
 
 class SQLModelUtil:
     def __init__(self, db_config: DBEnum, database: str):
-        db_url = f"{db_config}/{database}?charset=utf8"
+        db_url = f"{db_config.value}/{database}?charset=utf8"
         self.engine = create_engine(
             db_url, echo=True, pool_size=8, pool_recycle=60 * 30
         )
@@ -67,12 +67,14 @@ class SQLModelUtil:
         :return:
         """
         with Session(self.engine) as session:
-            return session.exec(statement).first()
+            return session.exec(statement).all()
 
 
 if __name__ == "__main__":
     # 手写sql示例
-    sql = " select * from table ;"
-    db = SQLModelUtil(DBEnum.UAT, "fms")
+    sql = " select * from bill_detail "
+    db = SQLModelUtil(DBEnum.SIT, "fms")
     result = db.query_all(text(sql))
-    print(result)
+    for row in result:
+        print(row._mapping)  # 这里打印的是字典类型，可以转为pydantic数据类型
+        # {'id': 1, 'name': '张三', 'age': '18', 'create_time': datetime.datetime(2025, 2, 2, 12, 12, 12)}
