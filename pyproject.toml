@@ -2,7 +2,7 @@
 name = "study_python"
 version = "0.1.0"
 description = "用于个人学习记录"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 readme = "README.md"
 authors = [
     { name = "MyNextWeekend", email = "jinhu007@outlook.com" }
@@ -32,6 +32,8 @@ dependencies = [
     "sqlmodel>=0.0.22",
     "pytest>=8.3.3",
     "python-dotenv>=1.0.1",
+    "sqlacodegen>=3.0.0",
+    "cryptography>=44.0.2",
 ]
 
 [tool.hatch.metadata]
