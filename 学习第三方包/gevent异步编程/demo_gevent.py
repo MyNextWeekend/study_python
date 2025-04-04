@@ -23,5 +23,5 @@ def run():
     gevent.joinall([t1, t2])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()

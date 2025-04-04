@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2023/5/2 17:08
 # @Author  : MyNextWeekend
+import cv2
 import mss
 import numpy as np
-import cv2
 
 sct = mss.mss()
 box = {"top": 50, "left": 50, "width": 200, "height": 200}

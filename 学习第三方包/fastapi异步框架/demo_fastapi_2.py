@@ -1,4 +1,5 @@
 import asyncio
+
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -16,6 +17,7 @@ async def read_item(item_id: int):
 
 async def run_fastapi():
     import uvicorn
+
     # 在这里启动FastAPI服务器
     config = uvicorn.Config(app, host="127.0.0.1", port=8000)
     server = uvicorn.Server(config)
@@ -36,5 +38,5 @@ async def main():
     await background_task()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())

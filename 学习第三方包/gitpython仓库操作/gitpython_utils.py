@@ -1,5 +1,6 @@
-import git
 import os
+
+import git
 
 
 def git_clone(git_url, repo_dir):
@@ -19,7 +20,7 @@ def git_clone(git_url, repo_dir):
         git.Repo.clone_from(git_url, repo_dir)
         print("Git clone success")
     except git.exc.GitError as e:
-        raise Exception(
+        raise Exception(  # noqa: B904
             f"Git clone error: {e} - URL: {git_url}, Target Directory: {repo_dir}"
         )
 
@@ -54,7 +55,7 @@ def git_status(repo_dir):
         status = repo.git.status()
         return status
     except git.exc.GitError as e:
-        raise Exception(f"Git status error: {e} - Repository Directory: {repo_dir}")
+        raise Exception(f"Git status error: {e} - Repository Directory: {repo_dir}")  # noqa: B904
 
 
 def git_checkout(repo_dir, branch_name):
@@ -72,7 +73,7 @@ def git_checkout(repo_dir, branch_name):
         repo.git.checkout(branch_name)
         print(f"Checked out to branch: {branch_name}")
     except git.exc.GitError as e:
-        raise Exception(
+        raise Exception(  # noqa: B904
             f"Git checkout error: {e} - Repository Directory: {repo_dir}, Branch: {branch_name}"
         )
 
@@ -95,7 +96,7 @@ def git_list_branches(repo_dir):
         return []
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     url = "git@github.com:MyNextWeekend/study_rust.git"
     repo_path = "/Users/weekend/workSpaces/vsCodeProjects/hello"
     # git_clone(url, repo_path)

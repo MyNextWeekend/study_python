@@ -1,12 +1,18 @@
-# -*- coding: utf-8 -*-
-from locust.contrib.fasthttp import FastHttpUser
-from locust import task, constant, LoadTestShape, events
 import logging
+
+from locust import LoadTestShape, constant, events, task
+from locust.contrib.fasthttp import FastHttpUser
 
 
 @events.init_command_line_parser.add_listener
 def _(parser):  # 设置自定义参数
-    parser.add_argument("--organize", type=str, env_var="LOCUST_MY_ARGUMENT", default="商户A", help="针对特定场景")
+    parser.add_argument(
+        "--organize",
+        type=str,
+        env_var="LOCUST_MY_ARGUMENT",
+        default="商户A",
+        help="针对特定场景",
+    )
 
 
 @events.test_start.add_listener
@@ -25,10 +31,14 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
 
     @task
     def my_task1(self):
-        print(f"my_argument={self.environment.parsed_options.organize}")  # 每个用户直接使用
+        print(
+            f"my_argument={self.environment.parsed_options.organize}"
+        )  # 每个用户直接使用
 
         # /hello 会自动拼接host地址组装实际请求地址
-        with self.client.get("/hello", catch_response=True, name="hello") as res:  # catch_response=true 可以自定义成功与失败
+        with self.client.get(
+            "/hello", catch_response=True, name="hello"
+        ) as res:  # catch_response=true 可以自定义成功与失败
             # {'request_type': 'GET', 'name': 'hello', 'context': {}, 'exception': None,
             # 'response': <locust.contrib.fasthttp.FastResponse object at 0x107584160>,
             # 'response_length': 203, 'response_time': 74}
@@ -38,7 +48,9 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
                 logging.info("code err")
                 res.failure("code err")  # 将响应结果置为失败并设置失败原因
                 return
-            if res.text == "":  # 根据接口响应类型采用res.text或者res.json() 用于断言响应结果
+            if (
+                res.text == ""
+            ):  # 根据接口响应类型采用res.text或者res.json() 用于断言响应结果
                 logging.info("empty body")
                 res.failure("empty body")  # 将响应结果置为失败并设置失败原因
                 return
@@ -56,6 +68,7 @@ class MyUserBe(FastHttpUser):  # 内置两种（FastHttpUser、HttpUser）
 
 class StagesShp(LoadTestShape):
     """负载配置"""
+
     stages = [
         {"duration": 60, "users": 10, "spawn_rate": 10},
         {"duration": 100, "users": 50, "spawn_rate": 10},
@@ -76,7 +89,7 @@ class StagesShp(LoadTestShape):
         return None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import os
 
     os.system(" locust -f locust_test.py")

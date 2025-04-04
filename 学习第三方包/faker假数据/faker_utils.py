@@ -1,6 +1,6 @@
 from faker import Faker
 
-f = Faker(locale='zh-CN')
+f = Faker(locale="zh-CN")
 print(f.name())
 print(f.ssn())
 print(f.phone_number())

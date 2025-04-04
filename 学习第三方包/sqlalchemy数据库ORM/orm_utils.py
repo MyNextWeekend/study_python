@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2023/4/30 15:19
 # @Author  : MyNextWeekend
 from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
 class ORM:

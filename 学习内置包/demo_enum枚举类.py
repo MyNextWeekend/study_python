@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2022/12/31 09:39
 # @Author  : MyNextWeekend
-from enum import Enum, auto, Flag, StrEnum
+from enum import Enum, Flag, StrEnum, auto
 
 
 class Param(Enum):
     """
     枚举类
     """
+
     RED = auto()  # 1
     ORANGE = auto()  # 2
     YELLOW = 100  # 100
@@ -21,6 +21,7 @@ class ColorParam(StrEnum):
     """
     枚举类
     """
+
     RED = auto()
     ORANGE = "orange"
     YELLOW = "yellow"
@@ -33,6 +34,7 @@ class Color(Flag):
     """
     区别与Enum 主要可以做到判断一个具体枚举 是否存在一个枚举集合中
     """
+
     RED = auto()  # 1 = 2^0
     ORANGE = auto()  # 2 = 2^1
     GREEN = auto()  # 4 = 2^2
@@ -40,7 +42,7 @@ class Color(Flag):
     PURPLE = auto()  # 16 = 2^4
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(Param.__dict__)
     print(dir(Param))
 

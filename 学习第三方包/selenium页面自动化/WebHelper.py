@@ -4,16 +4,16 @@ import time
 from selenium import webdriver
 
 
-class WebHelper(object):
+class WebHelper:
     """封装selenium基本操作"""
 
     def startBrowser(self):
         """启动览器"""
-        real_path = f'{os.path.dirname(__file__)}/drivers'
-        if self.browserType == 'CR':
-            real_path += '/chromedriver'
+        real_path = f"{os.path.dirname(__file__)}/drivers"
+        if self.browserType == "CR":
+            real_path += "/chromedriver"
             self.driver = webdriver.Chrome(real_path)
-        elif self.browserType == 'SF':
+        elif self.browserType == "SF":
             self.driver = webdriver.Safari()
         # 窗口最大化
         self.driver.maximize_window()
@@ -25,7 +25,7 @@ class WebHelper(object):
         """判断页面是否加载完成"""
         for i in range(self.dWaitTime):
             status = self.driver.execute_script("return document.readystate")
-            if str(status) == 'complete':
+            if str(status) == "complete":
                 break
             else:
                 time.sleep(1)
@@ -50,7 +50,7 @@ class WebHelper(object):
                 eReturn.append(ele)
         return eReturn
 
-    def __init__(self, driver: webdriver, browserType='SF', url=''):
+    def __init__(self, driver: webdriver, browserType="SF", url=""):
         """初始化操作"""
         self.url = url
         self.browserType = browserType
@@ -121,7 +121,9 @@ class WebHelper(object):
                             eReturn = self.findElementsByXpath(xpath)
                             if len(eReturn) == 0:
                                 # 当前查找失败，记录第四层的iframe
-                                tempframeslevel4 = self.findElementsByXpath("//iframe|//frame")
+                                tempframeslevel4 = self.findElementsByXpath(
+                                    "//iframe|//frame"
+                                )
                                 if len(tempframeslevel4) > 0:
                                     self.myframesDict3[frame3] = tempframeslevel4
                                 else:
@@ -143,9 +145,13 @@ class WebHelper(object):
                                     eReturn = self.findElementsByXpath(xpath)
                                     if len(eReturn) == 0:
                                         # 当前查找失败，记录第五层的iframe
-                                        tempframeslevel5 = self.findElementsByXpath("//iframe|//frame")
+                                        tempframeslevel5 = self.findElementsByXpath(
+                                            "//iframe|//frame"
+                                        )
                                         if len(tempframeslevel5) > 0:
-                                            self.myframesDict4[frame4] = tempframeslevel5
+                                            self.myframesDict4[frame4] = (
+                                                tempframeslevel5
+                                            )
                                         else:
                                             return eReturn
 
@@ -168,9 +174,15 @@ class WebHelper(object):
                                             eReturn = self.findElementsByXpath(xpath)
                                             if len(eReturn) == 0:
                                                 # 当前查找失败，记录第六层的iframe
-                                                tempframeslevel6 = self.findElementsByXpath("//iframe|//frame")
+                                                tempframeslevel6 = (
+                                                    self.findElementsByXpath(
+                                                        "//iframe|//frame"
+                                                    )
+                                                )
                                                 if len(tempframeslevel6) > 0:
-                                                    self.myframesDict5[frame5] = tempframeslevel6
+                                                    self.myframesDict5[frame5] = (
+                                                        tempframeslevel6
+                                                    )
                                                 else:
                                                     return eReturn
 
@@ -185,7 +197,9 @@ class WebHelper(object):
                                     if frame4 in self.myframesDict4.keys():
                                         for frame5 in self.myframesDict4[frame4]:
                                             if frame5 in self.myframesDict5.keys():
-                                                for frame6 in self.myframesDict5[frame5]:
+                                                for frame6 in self.myframesDict5[
+                                                    frame5
+                                                ]:
                                                     self.driver.switch_to.default_content()
                                                     self.driver.switch_to.frame(frame1)
                                                     self.driver.switch_to.frame(frame2)
@@ -193,7 +207,9 @@ class WebHelper(object):
                                                     self.driver.switch_to.frame(frame4)
                                                     self.driver.switch_to.frame(frame5)
                                                     self.driver.switch_to.frame(frame6)
-                                                    eReturn = self.findElementsByXpath(xpath)
+                                                    eReturn = self.findElementsByXpath(
+                                                        xpath
+                                                    )
 
         return eReturn
 
@@ -207,7 +223,10 @@ class WebHelper(object):
                 for item_handle in win_handles:
                     try:
                         self.driver.switch_to.window(item_handle)
-                        if newUrl in self.driver.title or newUrl in self.driver.current_url:
+                        if (
+                            newUrl in self.driver.title
+                            or newUrl in self.driver.current_url
+                        ):
                             return True
                     except:
                         return False
@@ -242,5 +261,5 @@ class WebHelper(object):
             return []
 
 
-if __name__ == '__main__':
-    WebHelper(url='http://www.baidu.com')
+if __name__ == "__main__":
+    WebHelper(url="http://www.baidu.com")

@@ -1,4 +1,3 @@
-import time
 import pyttsx3
 
 
@@ -18,5 +17,5 @@ def create_voice(text, filename):
     engine.stop()  # 结束
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     create_voice("hello i an great", "./a.mp4")

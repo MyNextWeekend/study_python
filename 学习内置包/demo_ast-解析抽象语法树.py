@@ -26,7 +26,7 @@ def extract_function_parameters_with_types(file_path: str):
     functions = []
     class_functions = []
 
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         node = ast.parse(f.read())
 
     for stmt in node.body:
@@ -39,12 +39,14 @@ def extract_function_parameters_with_types(file_path: str):
             for class_stmt in stmt.body:
                 if isinstance(class_stmt, ast.FunctionDef):
                     args_str = get_parameters_with_types(class_stmt)
-                    class_functions.append(f"{class_name}.{class_stmt.name}({args_str})")
+                    class_functions.append(
+                        f"{class_name}.{class_stmt.name}({args_str})"
+                    )
 
     return functions, class_functions
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     file1 = "datetime时间模块.py"
     file2 = "protocol鸭子类型.py"
     print(extract_function_parameters_with_types(file1))

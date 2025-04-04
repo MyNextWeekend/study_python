@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2023/6/17 17:08
 # @Author  : MyNextWeekend
-from pyecharts.charts import Bar
 from pyecharts import options as opts
+from pyecharts.charts import Bar
 
 # V1 版本开始支持链式调用
 bar = (

@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2023/3/19 16:50
 # @Author  : MyNextWeekend
+import logging
+import time
+
 import pywifi
 from pywifi import const  # 获取连接状态的常量库
-import time
-import logging
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -21,7 +21,7 @@ class MyWifi:
     def __init__(self):
         wifi = pywifi.PyWiFi()
         self.ifaces = wifi.interfaces()[0]  # 取第一个无限网卡
-        logger.info(f'使用的无线网卡是：{self.ifaces.name()}')  # 输出无线网卡名称
+        logger.info(f"使用的无线网卡是：{self.ifaces.name()}")  # 输出无线网卡名称
 
     def get_wifi_name(self):
         self.ifaces.scan()  # 扫描
@@ -55,7 +55,7 @@ class MyWifi:
             return False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     passwords = ["123456789", "66666666", "1234567890"]
 
     m = MyWifi()

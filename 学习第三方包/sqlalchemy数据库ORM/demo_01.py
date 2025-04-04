@@ -1,21 +1,20 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2022/9/4 10:25
 # @Author  : MyNextWeekend
 import asyncio
 import threading
 import time
 
-from sqlalchemy import select
-from orm_utils import db_orm
 from dao import Student
 from faker import Faker
+from orm_utils import db_orm
+from sqlalchemy import select
 
-fake = Faker(locale='zh-CN')
+fake = Faker(locale="zh-CN")
 
 
 def split_list(obj_list: list, chunk_size: int):
     for i in range(0, len(obj_list), chunk_size):
-        yield obj_list[i:i + chunk_size]
+        yield obj_list[i : i + chunk_size]
 
 
 def creat_student():
@@ -77,7 +76,7 @@ def insert_by_thead(objs):
         job.start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start = time.time()
 
     find_all()

@@ -1,10 +1,10 @@
-from multiprocessing import Process
-from flask import Flask
 import time
+from multiprocessing import Process
 
+from flask import Flask
+from gevent import monkey
 from gevent.pool import Pool
 from gevent.pywsgi import WSGIServer
-from gevent import monkey
 
 monkey.patch_all()
 
@@ -19,7 +19,7 @@ def async_callback(arg1, arg2):
     print(result)
 
 
-@app.route('/callback')
+@app.route("/callback")
 def callback():
     # 处理回调请求
     arg1 = "foo"
@@ -28,10 +28,10 @@ def callback():
     # 将异步回调逻辑放入协程中执行
     pool.spawn(async_callback, arg1, arg2)
 
-    return 'Callback request accepted'
+    return "Callback request accepted"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # app.run(debug=True)
     # 启动 一个进程+协程 处理
     # server = WSGIServer(("0.0.0.0", 8000), app)
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     def server_forever():
         server.start_accepting()
         server.stop_event.wait()
-    for i in range(3):  # 此处代表启动多个进程任务
+
+    for _ in range(3):  # 此处代表启动多个进程任务
         p = Process(target=server_forever)
         p.start()

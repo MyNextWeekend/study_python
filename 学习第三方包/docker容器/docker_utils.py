@@ -1,5 +1,6 @@
 import os
 from uuid import uuid4
+
 import docker
 from docker.errors import ContainerError
 
@@ -25,11 +26,11 @@ def run_repo_in_docker(repo_dir, entry_file):
             name=container_name,
             volumes={
                 os.path.abspath(repo_dir): {
-                    'bind': '/repo',  # 将整个仓库挂载到容器的 /repo 目录
-                    'mode': 'ro'  # 只读模式
+                    "bind": "/repo",  # 将整个仓库挂载到容器的 /repo 目录
+                    "mode": "ro",  # 只读模式
                 }
             },
-            detach=True  # 后台运行容器
+            detach=True,  # 后台运行容器
         )
 
         # 启动容器
@@ -39,10 +40,10 @@ def run_repo_in_docker(repo_dir, entry_file):
         container.wait()
 
         # 获取容器的日志
-        logs = container.logs(stdout=True, stderr=True).decode('utf-8')
+        logs = container.logs(stdout=True, stderr=True).decode("utf-8")
 
         # 获取容器的退出代码
-        exit_code = container.attrs['State']['ExitCode']
+        exit_code = container.attrs["State"]["ExitCode"]
         print(f"{container.attrs}")
         # 根据退出码生成返回结果
         if exit_code == 0:
@@ -61,7 +62,9 @@ def run_repo_in_docker(repo_dir, entry_file):
         # docker_client.images.remove(image=image_name, force=True)
 
 
-if __name__ == '__main__':
-    root_path = "/Users/weekend/workSpaces/pycharmProjects/study_python/学习第三方包/docker容器"
+if __name__ == "__main__":
+    root_path = (
+        "/Users/weekend/workSpaces/pycharmProjects/study_python/学习第三方包/docker容器"
+    )
     result, logs = run_repo_in_docker(root_path, "hello.py")
     print(f"{result:} {logs:}")

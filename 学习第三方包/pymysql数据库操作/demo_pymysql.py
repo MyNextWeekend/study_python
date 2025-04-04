@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2023/8/6 10:47
 # @Author  : MyNextWeekend
 import datetime
@@ -31,8 +30,8 @@ class MySQLDatabase:
                 password=self.password,
                 database=self.database,
                 port=self.port,
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor  # 指示游标以字典的形式返回查询结果
+                charset="utf8mb4",
+                cursorclass=pymysql.cursors.DictCursor,  # 指示游标以字典的形式返回查询结果
             )
 
     def close(self):
@@ -91,11 +90,13 @@ if __name__ == "__main__":
     results = db.query("SELECT * FROM student limit 10;")
     print(results)
     # 执行非查询
-    db.execute("INSERT INTO student (name,call_id,start_time,end_time,create_date) VALUES (%s, %s, %s, %s, %s)",
-               (
-                   random.choice(["111", "222", "333", "444"]),
-                   f"666",
-                   datetime.datetime.now(),
-                   datetime.datetime.now(),
-                   datetime.datetime.now()
-               ))
+    db.execute(
+        "INSERT INTO student (name,call_id,start_time,end_time,create_date) VALUES (%s, %s, %s, %s, %s)",
+        (
+            random.choice(["111", "222", "333", "444"]),
+            "666",
+            datetime.datetime.now(),
+            datetime.datetime.now(),
+            datetime.datetime.now(),
+        ),
+    )

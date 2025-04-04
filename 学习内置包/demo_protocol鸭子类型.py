@@ -13,16 +13,17 @@ class Animal(Protocol):
 
 class Dog:
     """与ABC不同的是：不需要显示继承，甚至可以不知道协议是什么"""
+
     def eat(self):
-        print('eat')
+        print("eat")
 
     def drink(self):
-        print('drink')
+        print("drink")
 
 
 class Cat:
     def eat(self):
-        print('eat')
+        print("eat")
 
 
 def do_something(animal: Animal):
@@ -30,7 +31,7 @@ def do_something(animal: Animal):
     animal.drink()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     dog = Dog()
     do_something(dog)
     cat = Cat()

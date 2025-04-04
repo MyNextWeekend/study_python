@@ -1,4 +1,4 @@
-from typing import Any, Union, Optional
+from typing import Any, Union
 
 from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
@@ -30,7 +30,7 @@ def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8000)

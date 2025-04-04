@@ -1,6 +1,6 @@
 import datetime
 
-from sqlmodel import Field, Session, SQLModel, select
+from sqlmodel import Field, SQLModel, select
 from sqlmodel_utils import DBEnum, SQLModelUtil
 
 

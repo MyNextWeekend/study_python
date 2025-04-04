@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2024/11/23 23:14
 # @Author  : hejinhu
-import pytest
 import logging
-from pytest import Item, CallInfo, TestReport
+
+import pytest
+from pytest import CallInfo, Item, TestReport
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +21,14 @@ def pytest_collection_modifyitems(session, config, items):
 
     for index, item in enumerate(items):
         # 记录测试用例信息
-        collected_tests.append({
-            "index": index,
-            "name": item.name,
-            "nodeid": item.nodeid,
-            "function": item.function,
-        })
+        collected_tests.append(
+            {
+                "index": index,
+                "name": item.name,
+                "nodeid": item.nodeid,
+                "function": item.function,
+            }
+        )
 
     # 打印所有收集的测试用例
     print("\nCollected Test Methods:")
@@ -44,8 +46,10 @@ def pytest_addoption(parser):
     添加自定义命令行选项。
     """
     parser.addoption(
-        "--select-tests", action="store", default=None,
-        help="Comma-separated list of test indices to run"
+        "--select-tests",
+        action="store",
+        default=None,
+        help="Comma-separated list of test indices to run",
     )
 
 
