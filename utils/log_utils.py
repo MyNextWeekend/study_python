@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # @Time    : 2021/4/16 21:58
 # @Author  : MyNextWeekend
 import logging
@@ -10,11 +9,12 @@ from utils.wrapper import singleton
 
 @singleton
 class SingletonLog:
-
     def __init__(self):
         # 如果已经初始化了就不再执行，避免重复添加handle
         self.Flag = False
-        self.fmt_str = "%(asctime)s【%(levelname)s】-%(filename)s[%(lineno)d]: %(message)s"
+        self.fmt_str = (
+            "%(asctime)s【%(levelname)s】-%(filename)s[%(lineno)d]: %(message)s"
+        )
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         # 添加handle
@@ -24,8 +24,10 @@ class SingletonLog:
     def file_handle(self):
         """日志文件的handle"""
 
-        filename = get_path('logs/log.log')
-        file_handle = TimedRotatingFileHandler(filename, when='midnight', backupCount=5, encoding='utf-8')
+        filename = get_path("logs/log.log")
+        file_handle = TimedRotatingFileHandler(
+            filename, when="midnight", backupCount=5, encoding="utf-8"
+        )
         file_handle.setLevel(logging.INFO)
         fmt = logging.Formatter(self.fmt_str)
         file_handle.setFormatter(fmt)

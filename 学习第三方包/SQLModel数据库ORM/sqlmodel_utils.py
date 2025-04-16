@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 from sqlmodel import Session, SQLModel, create_engine, text
 
@@ -26,6 +27,16 @@ class SQLModelUtil:
             session.commit()
             session.flush()
             return model
+
+    def add_all(self, models: List[SQLModel]):
+        """
+        新增数据
+        :return:
+        """
+        with Session(self.engine) as session:
+            # session.add_all(models)
+            session.bulk_save_objects(models)
+            session.commit()
 
     def delete(self, model: SQLModel):
         """

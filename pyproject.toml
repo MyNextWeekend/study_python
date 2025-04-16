@@ -65,6 +65,7 @@ ignore = [
     "B008", # do not perform function calls in argument defaults
     "C901", # too complex
     "W191", # indentation contains tabs
+    "UP006",
 ]
 
 [tool.ruff.lint.isort]
