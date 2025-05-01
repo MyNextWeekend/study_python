@@ -14,7 +14,7 @@ dependencies = [
     "numpy>=1.24.4",
     "requests>=2.32.3",
     "flask>=3.0.3",
-    "fastapi>=0.115.0",
+    "fastapi[standard]>=0.115.0",
     "drissionpage>=4.1.0.6",
     "faker>=30.1.0",
     "gevent>=24.2.1",
@@ -35,6 +35,7 @@ dependencies = [
     "sqlacodegen>=3.0.0",
     "cryptography>=44.0.2",
     "markitdown>=0.1.1",
+    "pydantic-settings>=2.9.1",
 ]
 
 [tool.hatch.metadata]
