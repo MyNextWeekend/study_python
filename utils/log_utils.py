@@ -8,7 +8,8 @@ from logging.handlers import TimedRotatingFileHandler
 from config.config import settings
 from utils.wrapper import singleton
 
-# 声明上下文变量
+# 声明上下文变量（不管是同步还是异步，都可以使用）
+# 子线程不会继承父线程的上下文，需要手动copy_context
 trace_id: ContextVar[str] = ContextVar("trace_id", default="-")
 
 
