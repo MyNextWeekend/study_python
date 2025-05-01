@@ -1,19 +1,19 @@
-from typing import Any, Union
+from typing import Any
 
 from fastapi import FastAPI, UploadFile
 from pydantic import BaseModel
 
-from utils.log_utils import SingletonLog
+from utils.log_utils import LogUtil
 
-log = SingletonLog().get_logger()
+log = LogUtil().get_logger()
 app = FastAPI()
 
 
 class ItemRes(BaseModel):
     name: str
-    description: Union[str, None] = None
+    description: str | None = None
     price: float
-    tax: Union[float, None] = None
+    tax: float | None = None
     tags: list[str] = []
 
 
