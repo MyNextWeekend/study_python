@@ -32,7 +32,10 @@ class DBUtil:
     """
 
     def __init__(
-        self, env: DBEnvEnum, database: str, cursor: Type[Cursor] = DictCursor
+        self,
+        env: DBEnvEnum,
+        database: str,
+        cursor: Type[Union[Cursor, DictCursor]] = DictCursor,
     ):
         logger.info(f"init db:{env.name} database:{database}")
         self._conn: pymysql.Connection = pymysql.connect(
@@ -52,10 +55,10 @@ class DBUtil:
             yield self
             logger.info("commit changes in transaction")
             self._conn.commit()
-        except Exception as e:
-            logger.error(f"will rollback in transaction: {e}")
+        except Exception as exc:
+            logger.error(f"will rollback in transaction: {exc}", exc_info=True)
             self._conn.rollback()
-            raise e
+            raise exc
         finally:
             self._in_transaction = False
 
@@ -81,7 +84,7 @@ class DBUtil:
 
     def fetch_one(
         self, sql: str, params: Optional[Union[Tuple, List, Dict]] = None
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[Union[Dict[str, Any], Tuple[Any, ...]]]:
         logger.info(f"execute sql:{sql} ,params:{params}")
         with self._conn.cursor() as cursor:
             cursor.execute(sql, params)
@@ -89,7 +92,7 @@ class DBUtil:
 
     def fetch_all(
         self, sql: str, params: Optional[Union[Tuple, List, Dict]] = None
-    ) -> List[Dict[str, Any]] | tuple[tuple[Any, ...], ...]:
+    ) -> Union[List[Dict[str, Any]], Tuple[Tuple[Any, ...], ...]]:
         logger.info(f"execute sql:{sql} ,params:{params}")
         with self._conn.cursor() as cursor:
             cursor.execute(sql, params)
@@ -97,7 +100,7 @@ class DBUtil:
 
     def fetch_many(
         self, sql: str, size: int, params: Optional[Union[Tuple, List, Dict]] = None
-    ) -> List[Dict[str, Any]] | tuple[tuple[Any, ...], ...]:
+    ) -> Union[List[Dict[str, Any]], Tuple[Tuple[Any, ...], ...]]:
         logger.info(f"execute sql:{sql} ,params:{params}")
         with self._conn.cursor() as cursor:
             cursor.execute(sql, params)
