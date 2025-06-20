@@ -22,8 +22,8 @@ class DBEnvEnum(Enum):
     数据库配置
     """
 
-    SIT: DBConf = DBConf(host="127.0.0.1", port=3306, user="root", passwd="123456")
-    UAT: DBConf = DBConf(host="127.0.0.1", port=3306, user="root", passwd="123456")
+    SIT = DBConf(host="127.0.0.1", port=3306, user="root", passwd="123456")
+    UAT = DBConf(host="127.0.0.1", port=3306, user="root", passwd="123456")
 
 
 class DBUtil:
@@ -55,7 +55,7 @@ class DBUtil:
         except Exception as e:
             logger.error(f"will rollback in transaction: {e}")
             self._conn.rollback()
-            raise
+            raise e
         finally:
             self._in_transaction = False
 
