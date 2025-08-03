@@ -19,6 +19,7 @@ async def do_something(number: int) -> int:
 async def demo_task_group():
     print(f"demo_task_group func start at {time.strftime('%X')}")
 
+    # 有一个方法抛异常，其他没有执行完的协程都停止了
     async with asyncio.TaskGroup() as tg:
         t1 = tg.create_task(do_something(5))
         t2 = tg.create_task(do_something(2))
