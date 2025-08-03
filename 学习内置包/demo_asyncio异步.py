@@ -48,7 +48,26 @@ async def demo_gather():
     print(f"demo_gather func finished at {time.strftime('%X')}")
 
 
+def blocking_io(number: int):
+    print(f"blocking_io func start {number} at {time.strftime('%X')}")
+    # 请注意 time.sleep() 可被替换为任意一种
+    # 阻塞式 IO 密集型操作，例如文件操作。
+    time.sleep(number)
+    print(f"blocking_io func finished at {time.strftime('%X')}")
+
+
+async def demo_to_thread():
+    print(f"demo_to_thread func start at {time.strftime('%X')}")
+
+    await asyncio.gather(
+        asyncio.to_thread(blocking_io, 3), asyncio.to_thread(blocking_io, 5)
+    )
+
+    print(f"demo_to_thread func finished at {time.strftime('%X')}")
+
+
 if __name__ == "__main__":
     # asyncio.run(demo_gather())
     # asyncio.run(demo_task_group())
-    asyncio.run(demo_time_out())
+    # asyncio.run(demo_time_out())
+    asyncio.run(demo_to_thread())
