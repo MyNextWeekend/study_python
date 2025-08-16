@@ -1,0 +1,17 @@
+{
+    "python.testing.pytestEnabled": true, // 启用 pytest 测试框架
+    "python.testing.cwd": "${workspaceFolder}/tests", // 设置测试目录为 tests
+    "files.exclude": { // 配置vscode不显示文件
+        "**/__pycache__": true,
+        "**/.pytest_cache": true
+    },
+    // 仅对 python 文件生效
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff", // 默认使用 Ruff 格式化
+        // "editor.formatOnSave": true, // 保存时自动格式化
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit", // 保存时自动修复可修复的 lint 错误
+        },
+    },
+    "python.analysis.typeCheckingMode": "standard", // plance 设置类型检查模式为标准
+}
