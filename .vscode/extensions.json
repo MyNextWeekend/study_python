@@ -2,7 +2,8 @@
     "recommendations": [
         "usernamehw.errorlens",
         "ms-python.python",
-        "ms-python.vscode-pylance",
+        // "ms-python.vscode-pylance",
+        "astral-sh.ty",
         "charliermarsh.ruff",
         "gruntfuggly.todo-tree",
         "rioukkevin.vscode-git-commit",

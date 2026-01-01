@@ -104,3 +104,5 @@ venv.bak/
 .mypy_cache/
 /学习第三方包/opencv图像处理/trainer/
 
+
+.DS_Store
