@@ -13,5 +13,6 @@
             "source.fixAll.ruff": "explicit", // 保存时自动修复可修复的 lint 错误
         },
     },
-    "python.analysis.typeCheckingMode": "standard", // plance 设置类型检查模式为标准
+    "python.languageServer": "None"
+    // "python.analysis.typeCheckingMode": "standard", // plance 设置类型检查模式为标准
 }
