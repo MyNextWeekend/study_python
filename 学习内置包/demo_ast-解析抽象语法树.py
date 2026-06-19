@@ -42,14 +42,16 @@ def _get_parameters_with_types(func: ast.FunctionDef) -> list[Arg]:
     return parameters
 
 
-def extract_function_parameters_with_types(file_path: pathlib.Path):
+def extract_function_parameters_with_types(
+    file_path: pathlib.Path,
+) -> tuple[AstInfo, list[AstInfo]]:
     """
     解析给定的 Python 源代码，提取函数形参及其类型注解。
     :param file_path: 文件路径
-    :return:
+    :return: 非类函数，类函数
     """
     functions = []
-    class_functions = []
+    class_functions: list[AstInfo] = []
 
     with open(file_path) as f:
         node = ast.parse(f.read())
