@@ -1,4 +1,5 @@
 import ast
+import pathlib
 from dataclasses import dataclass
 from typing import Optional
 
@@ -31,8 +32,8 @@ def _get_parameters_with_types(func: ast.FunctionDef) -> list[Arg]:
     parameters = []
     for parameter in func.args.args:
         arg_name = parameter.arg
-        if arg_name == "self":  # 过滤 方法的 self 参数
-            continue
+        # if arg_name == "self":  # 过滤 方法的 self 参数
+        #     continue
         arg = Arg(name=arg_name, type=None)
         if parameter.annotation:
             type_annotation = ast.unparse(parameter.annotation)
@@ -41,7 +42,7 @@ def _get_parameters_with_types(func: ast.FunctionDef) -> list[Arg]:
     return parameters
 
 
-def extract_function_parameters_with_types(file_path: str):
+def extract_function_parameters_with_types(file_path: pathlib.Path):
     """
     解析给定的 Python 源代码，提取函数形参及其类型注解。
     :param file_path: 文件路径
@@ -64,8 +65,8 @@ def extract_function_parameters_with_types(file_path: str):
             for class_stmt in stmt.body:
                 if isinstance(class_stmt, ast.FunctionDef):
                     name = class_stmt.name
-                    if name == "__init__":  # 去掉初始化方法
-                        continue
+                    # if name == "__init__":  # 去掉初始化方法
+                    #     continue
                     ast_info.functions.append(
                         FuncInfo(
                             func_name=name,
@@ -80,8 +81,9 @@ def extract_function_parameters_with_types(file_path: str):
 
 
 if __name__ == "__main__":
-    file1 = "./学习内置包/demo_datetime时间模块.py"
-    file2 = "./学习内置包/demo_protocol鸭子类型.py"
+    path = pathlib.Path(__file__)
+    file1 = path.parent / "demo_datetime时间模块.py"
+    file2 = path.parent / "demo_protocol鸭子类型.py"
     print(extract_function_parameters_with_types(file1))
     # (['get_before_date(days: int, today: datetime.date)', 'get_before_datetime(days: int, today_time: datetime.datetime)', 'get_before_time(today_time: datetime.datetime, day: int, hour: int, minute: int, second: int)'], [])
     print(extract_function_parameters_with_types(file2))
