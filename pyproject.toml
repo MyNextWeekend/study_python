@@ -2,7 +2,7 @@
 name = "study_python"
 version = "0.1.0"
 description = "用于个人学习记录"
-requires-python = ">= 3.10"
+requires-python = ">= 3.13"
 readme = "README.md"
 authors = [
     { name = "MyNextWeekend", email = "jinhu007@outlook.com" }
