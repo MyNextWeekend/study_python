@@ -1,13 +1,13 @@
-from pathlib import Path, PosixPath
+from pathlib import Path
 
-from pydantic import PostgresDsn, computed_field
+from pydantic import computed_field
 from pydantic_core import MultiHostUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class _Settings(BaseSettings):
     # 项目的根目录
-    root_dir: PosixPath = Path(__file__).resolve().parent.parent
+    root_dir: Path = Path(__file__).resolve().parent.parent
 
     model_config = SettingsConfigDict(
         # 配置文件位置，项目根目录 .env 文件
@@ -17,7 +17,7 @@ class _Settings(BaseSettings):
     )
 
     # 日志文件位置
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def log_file(self) -> str:
         log_path = self.root_dir.joinpath("logs")
@@ -34,7 +34,7 @@ class _Settings(BaseSettings):
 
     @computed_field  # type: ignore[prop-decorator]
     @property
-    def sqlmodel_database_uri(self) -> PostgresDsn:
+    def sqlmodel_database_uri(self) -> MultiHostUrl:
         return MultiHostUrl.build(
             scheme="mysql+pymysql",
             username=self.db_name,
@@ -54,3 +54,4 @@ settings = _Settings()
 
 if __name__ == "__main__":
     print(settings.root_dir)
+    print("msg")

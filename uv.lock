@@ -2599,7 +2599,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "passlib", specifier = ">=1.7.4" },
     { name = "pyautogui", specifier = ">=0.9.54" },
-    { name = "pydantic-settings", specifier = ">=2.9.1" },
+    { name = "pydantic-settings", specifier = ">=2.14.2" },
     { name = "pymysql", specifier = ">=1.1.1" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
