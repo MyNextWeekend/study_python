@@ -2543,7 +2543,7 @@ wheels = [
 [[package]]
 name = "study-python"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "bcrypt" },
     { name = "cryptography" },
@@ -2566,7 +2566,6 @@ dependencies = [
     { name = "pyautogui" },
     { name = "pydantic-settings" },
     { name = "pymysql" },
-    { name = "pytest" },
     { name = "python-dotenv" },
     { name = "python-telegram-bot" },
     { name = "pywifi" },
@@ -2576,6 +2575,11 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "sqlmodel" },
     { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -2601,7 +2605,6 @@ requires-dist = [
     { name = "pyautogui", specifier = ">=0.9.54" },
     { name = "pydantic-settings", specifier = ">=2.14.2" },
     { name = "pymysql", specifier = ">=1.1.1" },
-    { name = "pytest", specifier = ">=8.3.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "python-telegram-bot", specifier = ">=22.5" },
     { name = "pywifi", specifier = ">=1.1.12" },
@@ -2612,6 +2615,9 @@ requires-dist = [
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "uvicorn", specifier = ">=0.31.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "sympy"
