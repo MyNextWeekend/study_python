@@ -47,7 +47,7 @@ class _Settings(BaseSettings):
     redis_password: str
 
 
-settings = _Settings()
+settings = _Settings()  # type: ignore
 
 if __name__ == "__main__":
     print(settings.root_dir)
